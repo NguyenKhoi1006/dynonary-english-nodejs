@@ -1,0 +1,122 @@
+:root {
+  --primary-color: #111111;
+  --primary-dark: #333333;
+  --secondary-color: #2F3437;
+
+  --bg-color-main: #F7F6F3;
+  --bg-color-sec: #FFFFFF;
+  --bg-color-accent: #F0EFED;
+
+  --title-color: #2F3437;
+  --text-color: #2F3437;
+  --label-color: #787774;
+  --border-color: #EAEAEA;
+  --hover-color: #F0EFED;
+
+  --error-color: #9F2F2D;
+  --error-bg: #FDEBEC;
+  --right-color: #346538;
+  --right-bg: #EDF3EC;
+  --warning-color: #956400;
+  --warning-bg: #FBF3DB;
+  --info-color: #1F6C9F;
+  --info-bg: #E1F3FE;
+
+  --xp-color: #956400;
+  --streak-color: #956400;
+  --heart-color: #9F2F2D;
+  --gem-color: #1F6C9F;
+
+  --light-grey: #EAEAEA;
+  --grey: #c4c4c4;
+  --medium-grey: #787774;
+  --dark-grey: #2F3437;
+
+  --font: 'SF Pro Display', 'Geist Sans', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --font-heading: 'Playfair Display', 'Instrument Serif', Georgia, serif;
+  --nav-height: 6.4rem;
+  --bottom-nav-height: 6.4rem;
+  --border-radius: 8px;
+  --sm-border-radius: 6px;
+  --lg-border-radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  font-size: 87.5%;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font);
+}
+
+body {
+  position: relative;
+  background-color: var(--bg-color-main);
+  overflow: auto;
+}
+
+#root {
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-color-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--medium-grey);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--grey);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+p,
+ul {
+  margin: 0;
+  color: var(--text-color);
+}
+
+ul {
+  list-style: none;
+}
+
+p {
+  word-wrap: break-word;
+}
+
+li {
+  text-decoration: none;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media only screen and (max-width: 576px) {
+  html {
+    font-size: 75%;
+  }
+}

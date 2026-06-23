@@ -1,0 +1,1 @@
+import{r as t}from"./index-DRYlVOHl.js";function o(){return t.useEffect(()=>(document.getElementById("dynoNav").style.display="none",()=>{var e;(e=document.getElementById("dynoNav"))==null||e.removeAttribute("style")}),[]),null}export{o as u};

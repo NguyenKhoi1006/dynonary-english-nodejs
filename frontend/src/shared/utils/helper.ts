@@ -1,0 +1,1 @@
+export { cloudinaryImgOptimize } from 'helper';

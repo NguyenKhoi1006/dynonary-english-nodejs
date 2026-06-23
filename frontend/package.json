@@ -1,0 +1,47 @@
+{
+	"name": "Dynonary",
+	"version": "0.2.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"start": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"deploy": "vite build && ./auto-deploy.cmd"
+	},
+	"dependencies": {
+		"@emotion/react": "^11.11.3",
+		"@emotion/styled": "^11.11.0",
+		"@greatsumini/react-facebook-login": "^3.4.0",
+		"@hookform/resolvers": "^3.3.4",
+		"@mui/icons-material": "^5.15.6",
+		"@mui/material": "^5.15.6",
+		"@mui/styles": "^5.15.6",
+		"@mui/x-data-grid": "^6.20.4",
+		"@react-oauth/google": "^0.13.5",
+		"@reduxjs/toolkit": "^1.9.7",
+		"axios": "^1.6.7",
+		"compressorjs": "^1.2.1",
+		"firebase": "^12.14.0",
+		"query-string": "^8.2.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-hook-form": "^7.50.1",
+		"react-redux": "^8.1.3",
+		"react-router-dom": "^6.22.0",
+		"react-scroll": "^1.9.0",
+		"yup": "^1.3.3"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.10",
+		"@types/query-string": "^6.3.0",
+		"@types/react": "^18.2.48",
+		"@types/react-dom": "^18.2.18",
+		"@types/react-scroll": "^1.8.10",
+		"@vitejs/plugin-react": "^4.2.1",
+		"sass": "^1.70.0",
+		"typescript": "^5.3.3",
+		"vite": "^5.0.12"
+	}
+}

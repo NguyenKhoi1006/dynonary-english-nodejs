@@ -1,0 +1,1 @@
+import{Q as r,j as t,U as a}from"./index-DRYlVOHl.js";var e={},o=a;Object.defineProperty(e,"__esModule",{value:!0});var u=e.default=void 0,i=o(r()),v=t;u=e.default=(0,i.default)((0,v.jsx)("path",{d:"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m5 11H7v-2h10z"}),"RemoveCircle");export{u as d};
