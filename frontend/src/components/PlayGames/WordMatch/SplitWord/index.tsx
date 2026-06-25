@@ -9,8 +9,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import useStyle from './style';
 const userSplitId = 'userSplitId';
 
-function splitWord(word = '') {
-  let splitArr = [];
+function splitWord(word: string = '') {
+  let splitArr: string[] = [];
   let failFlag = 1;
 
   while (failFlag) {
@@ -32,12 +32,12 @@ function splitWord(word = '') {
   return splitArr;
 }
 
-function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
+function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }: { word: any; mean: any; onCorrect: any; onWrong: any; resetFlag: any }) {
   const originSplit = useRef(splitWord(word.toLowerCase()));
-  const [userSplit, setUserSplit] = useState([]);
+  const [userSplit, setUserSplit] = useState<any[]>([]);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
-  const [modal, setModal] = useState({
+  const [modal, setModal] = useState<any>({
     show: false,
     loading: false,
     data: null,
@@ -64,7 +64,7 @@ function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
     },
   })();
 
-  const handleSelectCharacter = (index) => {
+  const handleSelectCharacter = (index: number) => {
     const newUserSplit = [
       ...userSplit,
       { index, ch: originSplit.current[index] },
@@ -76,7 +76,7 @@ function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
     }
   };
 
-  const handleReturnCharacter = (index) => {
+  const handleReturnCharacter = (index: number) => {
     if (isCheck) {
       setIsCheck(false);
     }
@@ -86,9 +86,9 @@ function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
   };
 
   const renderOriginSplit = () => {
-    return originSplit.current.map((ch, index) => {
+    return originSplit.current.map((ch: string, index: number) => {
       const isSelected =
-        userSplit.findIndex((item) => index === item.index) !== -1;
+        userSplit.findIndex((item: any) => index === item.index) !== -1;
 
       return (
         <div
@@ -104,7 +104,7 @@ function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
   };
 
   const renderUserSplit = () => {
-    return userSplit.map((item, key) => {
+    return userSplit.map((item: any, key: number) => {
       const correctClass =
         item.ch === word.toLowerCase()[key] ? 'right' : 'wrong';
       return (
@@ -154,7 +154,7 @@ function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
       originSplit.current = splitWord(word.toLowerCase());
     }
 
-    return () => (isSub = false);
+    return () => { isSub = false; };
   }, [resetFlag]);
 
   // get word detail
@@ -174,7 +174,7 @@ function SplitWord({ word, mean, onCorrect, onWrong, resetFlag }) {
       })();
     }
 
-    return () => (isSub = false);
+    return () => { isSub = false; };
   }, [modal]);
 
   // @rendering ...

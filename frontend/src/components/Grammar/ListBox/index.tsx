@@ -13,6 +13,14 @@ function GrammarListBox({
   _id,
   onLoadBlog,
   blogHtml,
+}: {
+  number: any;
+  title: any;
+  desc: any;
+  loading: any;
+  _id: any;
+  onLoadBlog: any;
+  blogHtml: any;
 }) {
   const classes = useStyle();
   const [showBlog, setShowBlog] = useState(false);

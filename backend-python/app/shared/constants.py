@@ -23,3 +23,19 @@ MAX_PER_PAGE = 100
 # Cloudinary folders
 CLOUDINARY_FOLDER = "dynonary"
 AVATAR_FOLDER = f"{CLOUDINARY_FOLDER}/user-avt"
+
+# LMS constants
+LMS_SUBJECTS = [
+    "english", "math", "science", "history", "literature",
+    "programming", "music", "art", "physics", "chemistry",
+    "biology", "economics", "business", "test-prep", "other"
+]
+LMS_SESSION_STATUSES = ["pending", "confirmed", "in_progress", "completed", "cancelled", "no_show"]
+LMS_BOOKING_STATUSES = ["pending", "confirmed", "cancelled"]
+LMS_AVAILABILITY_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+LMS_TUTOR_LEVELS = ["beginner", "intermediate", "advanced", "expert"]
+LMS_MAX_TITLE_LEN = 200
+LMS_MAX_DESC_LEN = 5000
+LMS_MAX_REVIEW_LEN = 2000
+LMS_RATING_MIN = 1
+LMS_RATING_MAX = 5

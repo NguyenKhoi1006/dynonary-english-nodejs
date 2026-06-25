@@ -36,5 +36,13 @@
     }
   },
   "include": ["src", "vite-env.d.ts"],
+  "exclude": [
+    "src/features",
+    "src/pages/Learner",
+    "src/pages/PlayGames",
+    "src/pages/*.jsx",
+    "build",
+    "node_modules"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

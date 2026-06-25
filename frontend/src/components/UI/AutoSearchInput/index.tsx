@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import useStyle from './style';
 
-let delayTimer = null;
+let delayTimer: any = null;
 
-function AutoSearchInput(props) {
+function AutoSearchInput(props: any) {
   const { onSearch, ...propRest } = props;
 
   const classes = useStyle();
   const inputRef = useRef(null);
   const [showIcon, setShowIcon] = useState(false);
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     delayTimer = debounce(
       delayTimer,
       () => {
@@ -31,7 +31,7 @@ function AutoSearchInput(props) {
   };
 
   const onReset = () => {
-    inputRef.current.value = '';
+    (inputRef.current as any).value = '';
     setShowIcon(false);
     onSearch('');
   };
@@ -58,10 +58,18 @@ function AutoSearchInput(props) {
 
 AutoSearchInput.propTypes = {
   onSearch: PropTypes.func,
+  disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
+  maxLength: PropTypes.number,
+  style: PropTypes.object,
 };
 
 AutoSearchInput.defaultProps = {
   onSearch: function () {},
+  disabled: false,
+  placeholder: 'Tìm Từ ...',
+  maxLength: 100,
+  style: {},
 };
 
 export default AutoSearchInput;

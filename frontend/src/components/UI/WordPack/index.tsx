@@ -15,11 +15,11 @@ import useStyle from './style';
 
 const formId = 'wordPackForm';
 
-function addAllOption(optionList = []) {
+function addAllOption(optionList: any[] = []) {
   return [{ value: '-1', label: 'Tất cả' }, ...optionList];
 }
 
-function WordPack(props) {
+function WordPack(props: any) {
   const {
     onChoose,
     onCancel,
@@ -35,9 +35,9 @@ function WordPack(props) {
   const classes = useStyle();
   const { topics: fetchedTopics, loading } = useTopics('vocab');
   const topics = useRef([]);
-  const topicOptions = fetchedTopics.map(t => ({ value: t.key || t._id, label: t.title }));
+  const topicOptions = fetchedTopics.map((t: any) => ({ value: t.key || t._id, label: t.title }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     const { target } = e;
     const type = target.type?.value || '-1',
@@ -58,7 +58,6 @@ function WordPack(props) {
       classes={{ paper: classes.dialogPaper }}
       maxWidth="md"
       fullWidth
-      disableBackdropClick
       open={open}>
       <DialogTitle classes={{ root: classes.title }}>{title}</DialogTitle>
 
@@ -69,7 +68,7 @@ function WordPack(props) {
               <SelectCustom
                 label="Loại từ"
                 className="w-100"
-                options={addAllOption(WORD_TYPES)}
+                options={addAllOption(WORD_TYPES) as any}
                 inputProps={{ name: 'type' }}
               />
             </Grid>
@@ -77,7 +76,7 @@ function WordPack(props) {
               <SelectCustom
                 label="Cấp độ"
                 className="w-100"
-                options={addAllOption(WORD_LEVELS)}
+                options={addAllOption(WORD_LEVELS) as any}
                 inputProps={{ name: 'level' }}
               />
             </Grid>
@@ -85,18 +84,18 @@ function WordPack(props) {
               <SelectCustom
                 label="Chuyên ngành"
                 className="w-100"
-                options={addAllOption(WORD_SPECIALTY)}
+                options={addAllOption(WORD_SPECIALTY) as any}
                 inputProps={{ name: 'specialty' }}
               />
             </Grid>
 
             {topicMultiples ? (
               <TopicSelect
-                onChange={(topicList) => (topics.current = topicList)}
-                buttonWrapper={(props) => (
+                onChange={(topicList: any) => (topics.current = topicList)}
+                buttonWrapper={(props: any) => (
                   <Grid {...props} item xs={12} md={6} />
                 )}
-                tagsWrapper={(props) => <Grid {...props} item xs={12} />}
+                tagsWrapper={(props: any) => <Grid {...props} item xs={12} />}
               />
             ) : (
               <Grid item xs={12} md={6}>
@@ -110,7 +109,7 @@ function WordPack(props) {
                 <SelectCustom
                   label="Chủ đề"
                   className="w-100"
-                  options={addAllOption(topicOptions)}
+                  options={addAllOption(topicOptions) as any}
                   inputProps={{ name: 'topic' }}
                 />
               )}

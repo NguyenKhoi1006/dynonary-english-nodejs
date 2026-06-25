@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-function InfiniteScroll(props) {
+function InfiniteScroll(props: any) {
   const { className, onTouchAnchor, threshold } = props;
   const observer = useRef(
     new IntersectionObserver(
@@ -14,7 +14,7 @@ function InfiniteScroll(props) {
       { threshold },
     ),
   );
-  const [element, setElement] = useState(null);
+  const [element, setElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     const currentElement = element;
@@ -32,7 +32,7 @@ function InfiniteScroll(props) {
   }, [element]);
 
   return (
-    <div className={className} ref={setElement}>
+    <div className={className} ref={(el) => setElement(el)}>
       {props.children}
     </div>
   );

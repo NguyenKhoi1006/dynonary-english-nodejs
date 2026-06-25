@@ -90,4 +90,12 @@ export default makeStyles((theme) => ({
       margin: '0.4rem',
     },
   },
+
+  wordTitle: {
+    color: 'var(--secondary-color)',
+  },
+
+  level: {
+    color: 'var(--text-color)',
+  },
 }));

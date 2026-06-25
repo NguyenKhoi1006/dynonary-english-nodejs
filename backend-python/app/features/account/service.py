@@ -41,7 +41,7 @@ async def create_user_profile(
         "favoriteList": [],
         "createdDate": SERVER_TIMESTAMP,
         "provider": provider,
-        "role": "learner",
+        "role": "student",
         "membership": "free",
         "level": None,
         "status": "active",
@@ -53,8 +53,13 @@ async def create_user_profile(
     return profile
 
 
-async def update_user_profile(uid: str, name: str, new_username: str) -> Dict[str, Any]:
-    """Update user profile name and username."""
+async def update_user_profile(
+    uid: str,
+    name: str,
+    new_username: str,
+    new_role: str = "",
+) -> Dict[str, Any]:
+    """Update user profile name, username, and optionally role."""
     db = get_firestore_db()
     user_ref = db.collection(USERS_COL).document(uid)
 
@@ -71,7 +76,11 @@ async def update_user_profile(uid: str, name: str, new_username: str) -> Dict[st
         if any(doc.id != uid for doc in existing):
             return {"status": False, "message": "username đã được sử dụng"}
 
-    user_ref.update({"name": name, "username": new_username})
+    update_data: Dict[str, Any] = {"name": name, "username": new_username}
+    if new_role:
+        update_data["role"] = new_role
+
+    user_ref.update(update_data)
     return {"status": True, "message": "success"}
 
 

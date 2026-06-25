@@ -1,7 +1,13 @@
 """Seed a test admin user into Firestore.
 Usage: python seed_admin.py <email> <password> [name]
 """
+import os
 import sys
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_dir)
+sys.path.insert(0, os.path.dirname(script_dir))
+
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 from app.config import settings
@@ -14,8 +20,8 @@ email = sys.argv[1]
 password = sys.argv[2]
 name = sys.argv[3] if len(sys.argv) > 3 else "Admin"
 
-# Init Firebase Admin
-cred = credentials.Certificate(settings.firebase_credentials_path)
+cert_path = os.path.join(script_dir, settings.firebase_credentials_path)
+cred = credentials.Certificate(cert_path)
 firebase_admin.initialize_app(cred)
 db = firestore.client(database_id="dynodata")
 
@@ -48,4 +54,4 @@ profile = {
 
 db.collection("users").document(uid).set(profile, merge=True)
 print(f"Firestore profile created/updated for {email} with role=admin")
-print("Done. You can now login at /admin/login")
+print("Done. Login via the regular login page — role-based redirect will take you to /admin")

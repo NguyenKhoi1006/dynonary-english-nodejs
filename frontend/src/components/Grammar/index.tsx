@@ -4,20 +4,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import GrammarListBoxData from './ListBox/data';
 import useStyle from './style';
 
-function Grammar({ list, loading }) {
+function Grammar({ list, loading }: { list: any; loading: any }) {
   const classes = useStyle();
   const [blogList, setBlogList] = useState(list || []);
   const preSearchList = useRef(list || []);
 
-  const onSearch = (keyword) => {
-    if (keyword === '' && blogList.length !== preSearchList.current.length) {
-      setBlogList([...preSearchList.current]);
+  const onSearch = (keyword: string) => {
+    if (keyword === '' && blogList.length !== (preSearchList.current?.length || 0)) {
+      setBlogList([...(preSearchList.current || [])]);
     } else {
-      const newList = preSearchList.current?.filter((blog) => {
+      const newList = preSearchList.current?.filter((blog: any) => {
         const str = `${blog.title} ${blog.desc}`.toLowerCase();
         return str.indexOf(keyword.toLowerCase()) !== -1;
       });
-      setBlogList([...newList]);
+      setBlogList([...(newList || [])]);
     }
   };
 
@@ -29,7 +29,7 @@ function Grammar({ list, loading }) {
       preSearchList.current = [...list];
     }
 
-    return () => (isSub = false);
+    return () => { isSub = false; };
   }, [list]);
 
   return (
@@ -54,7 +54,7 @@ function Grammar({ list, loading }) {
                 </div>
               ))
           ) : blogList.length > 0 ? (
-            blogList.map((item, index) => (
+            blogList.map((item: any, index: number) => (
               <div className={classes.listBox} key={index}>
                 <GrammarListBoxData
                   number={index + 1}

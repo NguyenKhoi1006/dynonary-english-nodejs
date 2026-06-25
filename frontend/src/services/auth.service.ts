@@ -15,6 +15,7 @@ import {
   onAuthStateChanged,
   Unsubscribe,
 } from 'firebase/auth';
+import api from 'services/api';
 
 // ─── Email/Password Auth ────────────────────────────────────────
 
@@ -28,6 +29,7 @@ export async function registerWithEmail(
   email: string,
   password: string,
   displayName: string,
+  role: string = 'student',
 ) {
   const auth = getFirebaseAuth();
   const credential = await createUserWithEmailAndPassword(
@@ -39,6 +41,15 @@ export async function registerWithEmail(
   await updateProfile(credential.user, { displayName });
   // Send verification email
   await sendEmailVerification(credential.user);
+
+  // Create profile with selected role (best-effort)
+  try {
+    await api.get('/apis/account/user-info');
+    await api.put('/apis/account/update-profile', { role });
+  } catch {
+    // Profile will be created on first login with default role
+  }
+
   return credential.user;
 }
 

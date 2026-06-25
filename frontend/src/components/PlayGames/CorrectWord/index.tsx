@@ -9,12 +9,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import CorrectWordResult from '../Result';
 import useStyle from './style';
 
-function shuffleAnswers(word, phonetic, wrongList) {
+function shuffleAnswers(word: any, phonetic: any, wrongList: any[]) {
   let mergeList = [...wrongList, { word, phonetic }];
   return mergeList.sort(() => Math.random() - 0.5);
 }
 
-function addClassAnswerItem(status, answerIndex, index, word, answer) {
+function addClassAnswerItem(status: number, answerIndex: number, index: number, word: string, answer: string) {
   if (status !== 0) {
     if (word === answer) return 'right';
     if (answerIndex === index) return 'wrong';
@@ -22,7 +22,7 @@ function addClassAnswerItem(status, answerIndex, index, word, answer) {
   return '';
 }
 
-function CorrectWord({ list }) {
+function CorrectWord({ list }: { list: any }) {
   const classes = useStyle();
   const { voice, speed, volume } = useSpeaker();
 
@@ -51,10 +51,10 @@ function CorrectWord({ list }) {
 
   // fix Can't perform a React state update on an unmounted component
   useEffect(() => {
-    return () => (isSubscribe.current = false);
+    return () => { isSubscribe.current = false; };
   }, []);
 
-  const onAnswer = (answer, answerIndex) => {
+  const onAnswer = (answer: string, answerIndex: number) => {
     if (answer === word) {
       playSoundAnswer(word, true, voice, volume, speed);
       setState({
@@ -166,7 +166,7 @@ function CorrectWord({ list }) {
 
               {/* answers */}
               <div className={classes.answers}>
-                {answerList.map((answer, index) => (
+                {answerList.map((answer: any, index: number) => (
                   <div
                     onClick={() => onAnswer(answer.word, index)}
                     className={`${

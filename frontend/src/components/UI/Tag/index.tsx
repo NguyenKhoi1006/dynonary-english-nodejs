@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import useStyle from './style';
 
-function Tag({ title, iconSrc, id, onChange, resetFlag }) {
+function Tag({ title, iconSrc, id, onChange, resetFlag }: { title: any; iconSrc: any; id: any; onChange: any; resetFlag: any }) {
   const classes = useStyle();
   const [isActive, setIsActive] = useState(false);
 

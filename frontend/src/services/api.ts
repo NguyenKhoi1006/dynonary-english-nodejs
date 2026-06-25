@@ -11,19 +11,9 @@ const api: AxiosInstance = axios.create({
   },
 });
 
-// Request interceptor: attach appropriate auth token
+// Request interceptor: attach Firebase Auth token
 api.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
-    // Admin routes use token from localStorage (separate from regular user Firebase session)
-    if (config.url?.startsWith('/apis/admin/')) {
-      const adminToken = localStorage.getItem('admin_access_token');
-      if (adminToken) {
-        config.headers.Authorization = `Bearer ${adminToken}`;
-        return config;
-      }
-    }
-
-    // Regular routes use Firebase Auth token
     const auth = getAuth();
     const user = auth.currentUser;
     if (user) {

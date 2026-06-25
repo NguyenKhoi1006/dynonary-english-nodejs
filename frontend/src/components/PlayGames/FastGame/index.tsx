@@ -21,9 +21,9 @@ const CORRECT_SCORE = 10;
 const WRONG_SCORE = 5;
 const SCORE_PER_SEC = 5;
 
-function generateAnswerList(list = [], word = '') {
+function generateAnswerList(list: any[] = [], word: string = '') {
   const index = list.findIndex(
-    (i) => i?.word.toLowerCase() === word.toLowerCase(),
+    (i: any) => i?.word.toLowerCase() === word.toLowerCase(),
   );
   let seedList = [...list.slice(0, index), ...list.slice(index + 1)];
   seedList = seedList.sort(() => Math.random() - 0.5).slice(0, 8);
@@ -32,7 +32,7 @@ function generateAnswerList(list = [], word = '') {
   return seedList.sort(() => Math.random() - 0.5);
 }
 
-function TimeBar({ correctFlag, wrongFlag, onSaveTime, onTimeout }) {
+function TimeBar({ correctFlag, wrongFlag, onSaveTime, onTimeout }: { correctFlag: any; wrongFlag: any; onSaveTime: any; onTimeout: any }) {
   const classes = useStyle();
   const [restTime, setRestTime] = useState(TOTAL_TIME);
   const percent = Math.round((restTime / TOTAL_TIME) * 100);
@@ -96,10 +96,10 @@ function TimeBar({ correctFlag, wrongFlag, onSaveTime, onTimeout }) {
   );
 }
 
-function Result({ score }) {
+function Result({ score }: { score: any }) {
   const classes = useStyle();
-  // const history = useHistory\(\);
-  const { isAuth, coin } = useSelector((state) => state.userInfo);
+  const navigate = useNavigate();
+  const { isAuth, coin } = useSelector((state: any) => state.userInfo);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -152,7 +152,7 @@ function Result({ score }) {
   );
 }
 
-function FastGame({ list }) {
+function FastGame({ list }: { list: any }) {
   const classes = useStyle();
   const currentIndex = useRef(0);
   const [word, setWord] = useState(list[currentIndex.current].word);
@@ -162,7 +162,7 @@ function FastGame({ list }) {
   const [isDone, setIsDone] = useState(false);
 
   const onDone = () => {
-    setScore(score + ~~(restTime / 1000) * SCORE_PER_SEC);
+    setScore(score + ~~((restTime as any) / 1000) * SCORE_PER_SEC);
     setIsDone(true);
   };
 
@@ -189,7 +189,7 @@ function FastGame({ list }) {
     setScore(score + CORRECT_SCORE);
   };
 
-  const handleWrong = (removeIndex) => {
+  const handleWrong = (removeIndex: number) => {
     const newAnswerList = [...answerList];
     delete newAnswerList[removeIndex];
 
@@ -198,7 +198,7 @@ function FastGame({ list }) {
     setScore(score - WRONG_SCORE);
   };
 
-  const handleAnswer = (answer, index) => {
+  const handleAnswer = (answer: any, index: number) => {
     const isCorrect = answer.toLowerCase() === word.toLowerCase();
     if (isCorrect) {
       handleCorrect();
@@ -227,7 +227,7 @@ function FastGame({ list }) {
             </h1>
           </div>
           <div className={`flex-grow-1 ${classes.answerList}`}>
-            {answerList.map((item, index) => {
+            {answerList.map((item: any, index: number) => {
               if (item && item.picture) {
                 return (
                   <div
@@ -245,7 +245,7 @@ function FastGame({ list }) {
           <TimeBar
             correctFlag={flag.correct}
             wrongFlag={flag.wrong}
-            onSaveTime={(time) => (restTime.current = time)}
+            onSaveTime={(time: number) => (restTime.current = time)}
             onTimeout={onDone}
           />
         </>

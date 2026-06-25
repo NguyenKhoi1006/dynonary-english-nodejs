@@ -12,7 +12,7 @@ import React, { useRef } from 'react';
 import { useTopics } from 'services/useContentData';
 import useStyle from './style';
 
-function SentenceTopicModal({ onClose, onSelect, open }) {
+function SentenceTopicModal({ onClose, onSelect, open }: { onClose: any; onSelect: any; open: any }) {
   const classes = useStyle();
   const { topics, loading } = useTopics('sentence');
   const topicRef = useRef([]);
@@ -37,7 +37,7 @@ function SentenceTopicModal({ onClose, onSelect, open }) {
           </Typography>
         ) : (
           <ul className="d-flex flex-wrap">
-            {topics.map((topic, index) => (
+            {topics.map((topic: any, index: number) => (
               <div className="m-2" key={index}>
                 <Tag
                   title={topic.title}

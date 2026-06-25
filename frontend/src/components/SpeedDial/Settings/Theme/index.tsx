@@ -15,21 +15,21 @@ function ThemeSetting() {
   );
   const [palettes, setPalettes] = useState(() => getCustomPalettes());
 
-  const onChangeTheme = (theme) => {
+  const onChangeTheme = (theme: string) => {
     if (theme === currentTheme) return;
 
-    const root = document.querySelector(':root');
+    const root = document.querySelector(':root') as HTMLElement;
     if (currentTheme === THEME_KEYS.CUSTOM) root.removeAttribute('style'); // reset style
     root.setAttribute(THEME_KEYS.ROOT_KEY, theme);
     localStorage.setItem(THEME_KEYS.LS_KEY, theme);
   };
 
-  const toggleDarkLight = (theme) => {
+  const toggleDarkLight = (theme: string) => {
     onChangeTheme(theme);
     setCurrentTheme(theme);
   };
 
-  const onCustomThemeClick = (theme) => {
+  const onCustomThemeClick = (theme: string) => {
     if (theme === currentTheme) return;
     setPalettes(getCustomPalettes());
     setRootPalettes();

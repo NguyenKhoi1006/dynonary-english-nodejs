@@ -32,7 +32,7 @@ const IPA_CHARS = [
   'ʒ',
 ];
 
-function PhoneticKeyboard({ onClose, onInput }) {
+function PhoneticKeyboard({ onClose, onInput }: { onClose: any; onInput: any }) {
   const classes = useStyle();
   return (
     <div className={classes.root}>

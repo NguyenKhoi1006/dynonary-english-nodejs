@@ -31,4 +31,8 @@ export default makeStyles(() => ({
       color: '#fff',
     },
   },
+
+  tabContent: {
+    minHeight: '20rem',
+  },
 }));

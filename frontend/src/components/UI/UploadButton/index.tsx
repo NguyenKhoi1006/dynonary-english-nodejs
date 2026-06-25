@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { setMessage } from 'redux/slices/message.slice';
 import useStyle from './style';
 
-function checkFile(file) {
+function checkFile(file: { type: string; size: number }) {
   if (!file) return { status: false, message: 'File không hợp lệ' };
   const { type, size } = file;
 
@@ -26,10 +26,10 @@ function checkFile(file) {
   return { status: true };
 }
 
-function UploadButton({ title, className, onChange, resetFlag }) {
+function UploadButton({ title, className, onChange, resetFlag }: { title: any; className: any; onChange: any; resetFlag: any }) {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const [state, setState] = useState({ status: 0, data: null });
+  const [state, setState] = useState<{ status: number; data?: Record<string, any> | null }>({ status: 0, data: null });
 
   useEffect(() => {
     if (!resetFlag) return;
@@ -48,7 +48,7 @@ function UploadButton({ title, className, onChange, resetFlag }) {
     );
   };
 
-  const onFileChange = (file) => {
+  const onFileChange = (file: File) => {
     const { status, message = '' } = checkFile(file);
     if (!status) {
       dispatch(setMessage({ type: 'error', message }));
@@ -63,13 +63,13 @@ function UploadButton({ title, className, onChange, resetFlag }) {
     new Compressor(file, {
       quality: size > 1 ? 0.6 : 0.8,
 
-      success(fileResult) {
+      success(fileResult: any) {
         const fileReader = new FileReader();
-        fileReader.readAsDataURL(fileResult);
+        fileReader.readAsDataURL(fileResult as Blob);
 
         fileReader.onerror = loadFileError;
 
-        fileReader.onload = function (e) {
+        fileReader.onload = function (e: any) {
           const imgSrcBase64 = e.target.result;
           onChange(imgSrcBase64);
           setState({
@@ -103,9 +103,9 @@ function UploadButton({ title, className, onChange, resetFlag }) {
             className={classes.input}
             accept="image/*"
             id="button-file"
-            htmlFor="contained-button-file"
+
             type="file"
-            onChange={(e) => onFileChange(e.target.files[0])}
+            onChange={(e: any) => onFileChange(e.target.files[0])}
           />
           <label htmlFor="button-file">
             <Button
@@ -122,7 +122,7 @@ function UploadButton({ title, className, onChange, resetFlag }) {
 
       {/* loading */}
       {state.status === 1 && (
-        <Skeleton variant="rect" classes={{ root: classes.skeleton }} />
+        <Skeleton variant="rectangular" classes={{ root: classes.skeleton }} />
       )}
 
       {/* done */}

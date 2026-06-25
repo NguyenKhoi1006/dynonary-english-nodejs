@@ -9,7 +9,7 @@ import InfoIcon from '@mui/icons-material/Info';
 
 const MAX_LEN_NAME = 20;
 
-function LeaderBoardItem({ classes, nthTop, avt, name, score, unit }) {
+function LeaderBoardItem({ classes, nthTop, avt, name, score, unit }: { classes: any; nthTop: any; avt: any; name: any; score: any; unit: any }) {
   const nameReduced =
     Boolean(name) && name.length >= MAX_LEN_NAME
       ? `${name.slice(0, 17)}...`
@@ -48,10 +48,11 @@ function LeaderBoardItem({ classes, nthTop, avt, name, score, unit }) {
   );
 }
 
-function LeaderBoard({ title, list, color, loading, unit, tooltip }) {
+function LeaderBoard({ title, list, color, loading, unit, tooltip }: { title: any; list: any; color: any; loading: any; unit: any; tooltip: any }) {
   const classes = useStyle({ color });
-  const sortedList =
-    list && list.sort((a, b) => Number(b.score) - Number(a.score));
+  const sortedList = list
+    ? [...list].sort((a: any, b: any) => Number(b.score) - Number(a.score))
+    : [];
 
   return (
     <div className={classes.root}>
@@ -67,7 +68,7 @@ function LeaderBoard({ title, list, color, loading, unit, tooltip }) {
       <div className={classes.boxWrap}>
         {!loading
           ? list &&
-            sortedList.map((item, index) => (
+            sortedList.map((item: any, index: number) => (
               <LeaderBoardItem
                 {...item}
                 unit={unit}
@@ -83,7 +84,7 @@ function LeaderBoard({ title, list, color, loading, unit, tooltip }) {
                   className={classes.skeleton}
                   key={index}
                   animation="wave"
-                  variant="rect"
+                  variant="rectangular"
                 />
               ))}
       </div>

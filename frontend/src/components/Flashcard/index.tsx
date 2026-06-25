@@ -24,6 +24,13 @@ function Flashcard({
   onNextPage,
   onPrevPage,
   onWordPackChange,
+}: {
+  list: any;
+  total: any;
+  currentPage: any;
+  onNextPage: any;
+  onPrevPage: any;
+  onWordPackChange: any;
 }) {
   const classes = useStyle();
   const [mode, setMode] = useState(0); // 0 - gallery, 1 - slide show

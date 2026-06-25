@@ -13,7 +13,7 @@ export interface UserProfile {
   favoriteList: string[];
   createdDate?: any;
   provider: 'password' | 'google.com' | 'facebook.com';
-  role?: 'learner' | 'admin';
+  role?: 'student' | 'tutor' | 'admin';
   membership?: 'free' | 'premium';
   level?: string | null;
   status?: 'active' | 'banned';

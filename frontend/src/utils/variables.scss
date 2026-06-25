@@ -1,0 +1,40 @@
+// ─── SCSS Variables ───
+// Mirrors the CSS custom properties defined in reset.scss
+// Provides $variable access for SCSS functions like darken(), lighten(), etc.
+
+$navy: #0A1F2E;
+$navy-light: #1A3A52;
+$navy-dark: #060F18;
+$gold: #C9A84C;
+$gold-light: #F5E8C8;
+$gold-dark: #A6882E;
+$coral: #D95C4A;
+$coral-light: #FDE8E4;
+$emerald: #3B9B7A;
+$emerald-light: #E6F4EE;
+
+$warm-bg: #F8F6F2;
+$white: #FFFFFF;
+$charcoal: #1A1A1A;
+$graphite: #4A4A4A;
+$stone: #8A8A8A;
+$iron: #C4C4C4;
+$bone: #E8E5DF;
+$cloud: #F0EEE8;
+
+$error: #C73A3A;
+$warning: #B8860B;
+$info: #2B6B9A;
+$success: #3B9B7A;
+$error-light: #FDE8E8;
+$warning-light: #FDF4D6;
+$info-light: #E3F0F9;
+$success-light: #E6F4EE;
+
+$streak: #F59E0B;
+$hearts: #EF4444;
+$xp: #C9A84C;
+$xp-light: #F5E8C8;
+
+$font: 'SF Pro Display', 'Geist Sans', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+$font-heading: 'Playfair Display', 'Instrument Serif', Georgia, serif;

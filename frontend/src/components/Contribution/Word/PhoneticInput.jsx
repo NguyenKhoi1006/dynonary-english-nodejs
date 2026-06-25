@@ -12,7 +12,7 @@ function PhoneticInput(props) {
   const inputRef = useRef(null);
 
   const [openKeyboard, setOpenKeyboard] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string>('');
 
   const onCloseKeyboard = () => setOpenKeyboard(false);
 
@@ -66,6 +66,13 @@ PhoneticInput.propTypes = {
   errorMessage: PropTypes.string,
   register: PropTypes.any,
   resetFlag: PropTypes.number,
+  inputProps: PropTypes.object,
+  onClick: PropTypes.func,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  endAdornment: PropTypes.any,
+  className: PropTypes.string,
+  label: PropTypes.string,
 };
 
 PhoneticInput.defaultProps = {

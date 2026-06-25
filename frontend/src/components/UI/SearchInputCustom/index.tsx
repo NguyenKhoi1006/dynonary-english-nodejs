@@ -17,11 +17,11 @@ function SearchInputCustom({ placeholder = '' }) {
   const classes = useStyle();
   const navigate = useNavigate();
   const containerRef = useRef(null);
-  const inputRef = useRef(null);
-  const timerRef = useRef(null);
+  const inputRef = useRef<any>(null);
+  const timerRef = useRef<any>(null);
   const [focused, setFocused] = useState(false);
-  const [resultList, setResultList] = useState([]);
-  const [wordDetails, setWordDetails] = useState(null);
+  const [resultList, setResultList] = useState<any[]>([]);
+  const [wordDetails, setWordDetails] = useState<any>(null);
 
   useEffect(() => {
     return () => {
@@ -34,7 +34,7 @@ function SearchInputCustom({ placeholder = '' }) {
   }, []);
 
   const handleSelect = useCallback(
-    async (word, to) => {
+    async (word: any, to: any) => {
       handleCloseMenu();
       inputRef.current?.blur();
 
@@ -49,7 +49,7 @@ function SearchInputCustom({ placeholder = '' }) {
     [navigate, handleCloseMenu],
   );
 
-  const handleSearch = useCallback((e) => {
+  const handleSearch = useCallback((e: any) => {
     if (timerRef.current) clearTimeout(timerRef.current);
 
     timerRef.current = debounce(
@@ -70,7 +70,7 @@ function SearchInputCustom({ placeholder = '' }) {
         try {
           const apiRes = await wordApi.getSearchWord(word, true);
           if (apiRes.data?.packList) {
-            wordResults = apiRes.data.packList.map((i) => ({ title: i.word, to: null }));
+            wordResults = apiRes.data.packList.map((i: any) => ({ title: i.word, to: null }));
           }
         } catch (_) {
           wordResults = [];

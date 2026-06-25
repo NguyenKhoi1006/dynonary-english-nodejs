@@ -15,21 +15,28 @@ function TopicSelect({
   topicList,
   buttonWrapper,
   tagsWrapper,
+}: {
+  onChange: any;
+  resetFlag: any;
+  buttonTitle: any;
+  topicList: any;
+  buttonWrapper: any;
+  tagsWrapper: any;
 }) {
   const classes = useStyle();
   const { topics: fetchedTopics, loading } = useTopics('vocab');
   const activeTopicList = topicList || fetchedTopics;
   const [visible, setVisible] = useState(false);
-  const topics = useRef([]);
+  const topics = useRef<any[]>([]);
 
   const ButtonWrapper = buttonWrapper || Grid;
   const TagsWrapper = tagsWrapper || Grid;
 
-  const handleTopicChange = (id, isActive) => {
+  const handleTopicChange = (id: any, isActive: boolean) => {
     if (isActive) {
       topics.current.push(id);
     } else {
-      topics.current = topics.current.filter((i) => i !== id);
+      topics.current = topics.current.filter((i: any) => i !== id);
     }
 
     onChange(topics.current);
@@ -65,7 +72,7 @@ function TopicSelect({
             </Typography>
           ) : (
             <div className={classes.tags}>
-              {activeTopicList.map((topic, index) => (
+              {activeTopicList.map((topic: any, index: number) => (
                 <Tag
                   resetFlag={resetFlag}
                   iconSrc={topic.icon}

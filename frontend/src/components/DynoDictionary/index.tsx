@@ -19,6 +19,16 @@ function DynoDictionary({
   onSortTypeChange,
   onSearchWord,
   isTOEIC,
+}: {
+  list: any;
+  loading: any;
+  onLoadData: any;
+  more: any;
+  isFirstLoad: any;
+  onSettingWordPack: any;
+  onSortTypeChange: any;
+  onSearchWord: any;
+  isTOEIC: any;
 }) {
   const classes = useStyle();
 
@@ -56,7 +66,7 @@ function DynoDictionary({
                   {list && list.length > 0 ? (
                     <>
                       {/* render list */}
-                      {list.map((item, index) => (
+                      {list.map((item: any, index: number) => (
                         <li className={classes.listItem} key={index}>
                           <DynoDictionaryItemData {...item} />
                         </li>

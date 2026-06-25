@@ -10,7 +10,7 @@ class UserListItem(BaseModel):
     username: str = ""
     avt: str = ""
     coin: int = 0
-    role: str = "learner"
+    role: str = "student"
     membership: str = "free"
     level: Optional[str] = None
     status: str = "active"
@@ -30,7 +30,7 @@ class UserListResponse(BaseModel):
 class UpdateUserRequest(BaseModel):
     name: Optional[str] = Field(None, max_length=50)
     username: Optional[str] = Field(None, max_length=50)
-    role: Optional[str] = None  # "learner" | "admin"
+    role: Optional[str] = None  # "student" | "tutor" | "admin"
     level: Optional[str] = None  # A1-C2 or null to reset
     membership: Optional[str] = None  # "free" | "premium"
     status: Optional[str] = None  # "active" | "banned"

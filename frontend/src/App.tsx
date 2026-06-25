@@ -1,262 +1,153 @@
-import { ThemeProvider } from '@mui/material/styles';
-import Navigation from 'components/Navigation';
-import BottomNav from 'components/BottomNav';
-import SpeedDials from 'components/SpeedDial';
-import GlobalLoading from 'components/UI/GlobalLoading';
-import Message from 'components/UI/Message';
-import theme from 'shared/configs/theme';
-import useTheme from 'hooks/useTheme';
-import useVoice from 'hooks/useVoice';
-import NotFoundPage from 'features/home/NotFoundPage';
-import React, { Suspense, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Element } from 'react-scroll';
-import { routes } from 'shared/configs/router';
-import { ROUTES } from 'constant';
-import type { RootState } from 'redux/store';
-import { onAuthChange } from 'services/auth.service';
-import { getUserProfile, createUserProfile } from 'services/firestore.service';
-import { setUser, clearUser, setAuthLoading } from 'redux/slices/userInfo.slice';
-import { signOut, getAuth } from 'firebase/auth';
-import ProtectedRoute from 'components/ProtectedRoute';
-import AdminLayout from 'components/AdminLayout';
-import { AdminThemeProvider } from 'components/AdminLayout/ThemeContext';
+import React, { useEffect, Suspense } from 'react';
+import { ThemeProvider, CssBaseline, Box, CircularProgress } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Provider, useSelector } from 'react-redux';
+import store, { RootState } from './store';
+import { getTheme } from './theme';
+import { useAppDispatch } from './hooks/useAppDispatch';
+import { onAuthChange } from './services/auth.service';
+import { getUserProfile } from './services/firestore.service';
+import { setUser, clearUser, setAuthLoading } from './store/slices/userSlice';
+import { setLoading } from './store/slices/uiSlice';
+import NotificationProvider from './components/NotificationProvider';
+import PageTransition from './components/PageTransition';
 
-/* ── Learner paths that get bottom nav + compact header ── */
-const LEARNER_PATHS = [
-  ROUTES.LEARNER.PATH,
-  ROUTES.LEARNER.PROGRESS,
-  ROUTES.LEARNER.MATERIALS,
-  ROUTES.LEARNER.MATERIAL_DETAIL,
-  ROUTES.LEADERBOARD,
-  ROUTES.LEARNER.PLACEMENT,
-  ROUTES.LEARNER.LEVEL_UP,
-];
+// Lazy load pages
+const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
+const RegisterPage = React.lazy(() => import('./pages/auth/RegisterPage'));
+const DashboardPage = React.lazy(() => import('./pages/student/DashboardPage'));
+const TutorBrowsePage = React.lazy(() => import('./pages/student/TutorBrowsePage'));
+const TutorDetailPage = React.lazy(() => import('./pages/student/TutorDetailPage'));
+const CourseBrowsePage = React.lazy(() => import('./pages/student/CourseBrowsePage'));
+const CourseDetailPage = React.lazy(() => import('./pages/student/CourseDetailPage'));
+const SessionsPage = React.lazy(() => import('./pages/shared/SessionsPage'));
+const MessagesPage = React.lazy(() => import('./pages/shared/MessagesPage'));
+const ProfilePage = React.lazy(() => import('./pages/shared/ProfilePage'));
+const TutorDashboardPage = React.lazy(() => import('./pages/tutor/TutorDashboardPage'));
+const TutorCoursesPage = React.lazy(() => import('./pages/tutor/TutorCoursesPage'));
+const TutorStudentsPage = React.lazy(() => import('./pages/tutor/TutorStudentsPage'));
+const TutorEarningsPage = React.lazy(() => import('./pages/tutor/TutorEarningsPage'));
+const AdminDashboardPage = React.lazy(() => import('./pages/admin/AdminDashboardPage'));
+const NotFoundPage = React.lazy(() => import('./pages/shared/NotFoundPage'));
 
-function NavOnlyForLearner() {
-  const location = useLocation();
-  if (location.pathname.startsWith('/admin')) return null;
-  return <Navigation />;
-}
-
-function BottomNavOnLearner() {
-  const { isAuth } = useSelector((state: RootState) => state.userInfo);
-  const location = useLocation();
-  const isLearnerPage = LEARNER_PATHS.some((p) => location.pathname.startsWith(p));
-  if (!isAuth || !isLearnerPage) return null;
-  return <BottomNav />;
-}
-
-function LearnerPagePadding({ children }: { children: React.ReactNode }) {
-  const { isAuth } = useSelector((state: RootState) => state.userInfo);
-  const location = useLocation();
-  const isLearnerPage = LEARNER_PATHS.some((p) => location.pathname.startsWith(p));
-  const padBottom = isAuth && isLearnerPage ? 'calc(var(--bottom-nav-height) + 1.6rem)' : '0';
-  return <div style={{ paddingBottom: padBottom }}>{children}</div>;
-}
-
-function App() {
-  const dispatch = useAppDispatch();
-  const { isAuth, authLoading } = useSelector(
-    (state: RootState) => state.userInfo,
+function LoadingFallback() {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <CircularProgress />
+    </Box>
   );
+}
 
-  // get and set theme
-  useTheme();
+function ProtectedRoute({ children, requiredRole }: { children: React.ReactNode; requiredRole?: string }) {
+  const { isAuth, authLoading, currentUser } = useSelector((s: RootState) => s.user);
 
-  // get window voice and set custom voice
-  useVoice();
+  if (authLoading) return <LoadingFallback />;
+  if (!isAuth) return <Navigate to="/login" replace />;
+  if (requiredRole && currentUser?.role !== requiredRole) {
+    const fallback = currentUser?.role === 'admin' ? '/admin' : currentUser?.role === 'tutor' ? '/tutor' : '/dashboard';
+    return <Navigate to={fallback} replace />;
+  }
+  return <>{children}</>;
+}
 
-  // Firebase auth state listener
+function RootRedirect() {
+  const { isAuth, authLoading, currentUser } = useSelector((s: RootState) => s.user);
+  if (authLoading) return <LoadingFallback />;
+  if (!isAuth) return <Navigate to="/login" replace />;
+  const target = currentUser?.role === 'admin' ? '/admin' : currentUser?.role === 'tutor' ? '/tutor' : '/dashboard';
+  return <Navigate to={target} replace />;
+}
+
+function AppRoutes() {
+  const dispatch = useAppDispatch();
+  const { themeMode } = useSelector((s: RootState) => s.ui);
+
   useEffect(() => {
+    dispatch(setLoading(true));
     const unsubscribe = onAuthChange(async (firebaseUser) => {
       if (firebaseUser) {
-        // User is signed in
         try {
-          // Try to get existing Firestore profile
-          let profile = await getUserProfile(firebaseUser.uid);
-
-          if (!profile) {
-            // First-time login — create profile document
-            const displayName =
-              firebaseUser.displayName ||
-              firebaseUser.email?.split('@')[0] ||
-              '';
-            await createUserProfile(firebaseUser.uid, {
-              uid: firebaseUser.uid,
-              email: firebaseUser.email || '',
-              name: displayName,
-              username: displayName,
-              avt: firebaseUser.photoURL || '',
-              provider: firebaseUser.providerData[0]?.providerId as
-                | 'password'
-                | 'google.com'
-                | 'facebook.com',
-            });
-            profile = await getUserProfile(firebaseUser.uid);
-          }
-
+          const profile = await getUserProfile(firebaseUser.uid);
           if (profile) {
-            if (profile.role === 'admin') {
-              signOut(getAuth()).catch(() => {});
-              dispatch(clearUser());
-              return;
-            }
-
-            dispatch(
-              setUser({
+            dispatch(setUser({
+              user: {
                 uid: firebaseUser.uid,
                 email: profile.email,
                 name: profile.name,
-                username: profile.username,
                 avt: profile.avt,
-                coin: profile.coin,
-                favoriteList: profile.favoriteList,
-                role: profile.role,
-                membership: profile.membership,
-                level: profile.level,
-                status: profile.status,
-                xp: profile.xp,
-              }),
-            );
+                role: profile.role || 'student',
+                membership: profile.membership || 'free',
+                status: profile.status || 'active',
+              },
+              isTutor: false,
+            }));
           } else {
-            // Fallback: just use Firebase auth data
-            dispatch(
-              setUser({
+            dispatch(setUser({
+              user: {
                 uid: firebaseUser.uid,
                 email: firebaseUser.email || '',
-                name:
-                  firebaseUser.displayName ||
-                  firebaseUser.email?.split('@')[0] ||
-                  '',
+                name: firebaseUser.displayName || '',
                 avt: firebaseUser.photoURL || '',
-              }),
-            );
+                role: 'student',
+                membership: 'free',
+                status: 'active',
+              },
+            }));
           }
-        } catch (error) {
-          console.error('Failed to load user profile:', error);
-          // Still set basic user info from Firebase Auth
-          dispatch(
-            setUser({
-              uid: firebaseUser.uid,
-              email: firebaseUser.email || '',
-              name:
-                firebaseUser.displayName ||
-                firebaseUser.email?.split('@')[0] ||
-                '',
-              avt: firebaseUser.photoURL || '',
-            }),
-          );
+        } catch {
+          dispatch(clearUser());
         }
       } else {
-        // User is signed out
         dispatch(clearUser());
       }
     });
-
     return () => unsubscribe();
   }, [dispatch]);
 
   return (
-    <>
-      {authLoading ? (
-        <GlobalLoading />
-      ) : (
-        <ThemeProvider theme={theme}>
-          <Router>
-            <div className="dynonary-app">
-              <Element name="scrollTop" />
-              <NavOnlyForLearner />
+    <ThemeProvider theme={getTheme(themeMode)}>
+      <CssBaseline />
+      <NotificationProvider />
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          {/* Public */}
+          <Route path="/login" element={<PageTransition title="Đăng nhập"><LoginPage /></PageTransition>} />
+          <Route path="/register" element={<PageTransition title="Đăng ký"><RegisterPage /></PageTransition>} />
+          <Route path="/" element={<RootRedirect />} />
 
-              {/* routes */}
-              <Suspense fallback={<GlobalLoading />}>
-                <LearnerPagePadding>
-                  <Routes>
-                  {routes.map((route) => {
-                    const { isProtect, requiredRole } = route;
+          {/* Student */}
+          <Route path="/dashboard" element={<ProtectedRoute><PageTransition title="Dashboard"><DashboardPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutors" element={<ProtectedRoute><PageTransition title="Tìm gia sư"><TutorBrowsePage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutors/:id" element={<ProtectedRoute><PageTransition title="Chi tiết gia sư"><TutorDetailPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/courses" element={<ProtectedRoute><PageTransition title="Khóa học"><CourseBrowsePage /></PageTransition></ProtectedRoute>} />
+          <Route path="/courses/:id" element={<ProtectedRoute><PageTransition title="Chi tiết khóa học"><CourseDetailPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/sessions" element={<ProtectedRoute><PageTransition title="Lịch học"><SessionsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/messages" element={<ProtectedRoute><PageTransition title="Tin nhắn"><MessagesPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><PageTransition title="Hồ sơ"><ProfilePage /></PageTransition></ProtectedRoute>} />
 
-                    // Admin route – require admin role
-                    if (requiredRole === 'admin') {
-                      return (
-                        <Route
-                          key={route.path}
-                          path={route.path}
-                          element={
-                            <ProtectedRoute requiredRole="admin">
-                              <AdminThemeProvider>
-                                <AdminLayout />
-                              </AdminThemeProvider>
-                            </ProtectedRoute>
-                          }>
-                          <Route
-                            index
-                            element={
-                              <React.Suspense fallback={<GlobalLoading />}>
-                                {route.element}
-                              </React.Suspense>
-                            }
-                          />
-                        </Route>
-                      );
-                    }
+          {/* Tutor */}
+          <Route path="/tutor" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Bảng điều khiển"><TutorDashboardPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/my-courses" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Khóa học của tôi"><TutorCoursesPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/students" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Học viên"><TutorStudentsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/earnings" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Doanh thu"><TutorEarningsPage /></PageTransition></ProtectedRoute>} />
 
-                    // Protected route – require auth
-                    if (isProtect && !isAuth) {
-                      return (
-                        <Route
-                          key={route.path}
-                          path={route.path}
-                          element={
-                            <React.Suspense fallback={<GlobalLoading />}>
-                              {React.createElement(
-                                React.lazy(
-                                  () => import('features/auth/LoginPage'),
-                                ),
-                              )}
-                            </React.Suspense>
-                          }
-                        />
-                      );
-                    }
+          {/* Admin */}
+          <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Quản trị"><AdminDashboardPage /></PageTransition></ProtectedRoute>} />
 
-                    const wrappedElement = route.placementRequired ? (
-                      <ProtectedRoute placementRequired>
-                        <React.Suspense fallback={<GlobalLoading />}>
-                          {route.element}
-                        </React.Suspense>
-                      </ProtectedRoute>
-                    ) : (
-                      <React.Suspense fallback={<GlobalLoading />}>
-                        {route.element}
-                      </React.Suspense>
-                    );
-
-                    return (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={wrappedElement}
-                      />
-                    );
-                  })}
-                </Routes>
-                </LearnerPagePadding>
-              </Suspense>
-
-              <BottomNavOnLearner />
-
-              {/* common component */}
-              <div id="_overlay"></div>
-              <Message />
-              <SpeedDials />
-            </div>
-          </Router>
-        </ThemeProvider>
-      )}
-    </>
+          {/* 404 */}
+          <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
+        </Routes>
+      </Suspense>
+    </ThemeProvider>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </Provider>
+  );
+}

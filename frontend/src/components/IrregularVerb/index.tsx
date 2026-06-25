@@ -12,12 +12,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import useStyle from './style';
 
-function IrregularVerbFilter({ classes, onSort, onFilter }) {
-  const [anchorEl, setAnchorEl] = useState(null);
+function IrregularVerbFilter({ classes, onSort, onFilter }: { classes: any; onSort: any; onFilter: any }) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [sortType, setSortType] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
 
-  const handleFilter = (v) => {
+  const handleFilter = (v: any) => {
     setIsFiltered(Boolean(v));
     setAnchorEl(null);
     onFilter(v);
@@ -50,7 +50,6 @@ function IrregularVerbFilter({ classes, onSort, onFilter }) {
         }}
         anchorEl={anchorEl}
         disableScrollLock={true}
-        getContentAnchorEl={null}
         onClose={() => setAnchorEl(null)}
         keepMounted
         open={Boolean(anchorEl)}>
@@ -73,8 +72,8 @@ IrregularVerbFilter.propTypes = {
   onFilter: PropTypes.func,
 };
 
-function filterIrregularList(list = [], type = 1) {
-  let newList = [];
+function filterIrregularList(list: any[] = [], type = 1) {
+  let newList: any[] = [];
 
   switch (type) {
     case 0:
@@ -173,14 +172,14 @@ function filterIrregularList(list = [], type = 1) {
 function IrregularVerb() {
   const classes = useStyle();
   const { verbs: initList, loading } = useIrregularVerbs();
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<any[]>([]);
 
   useEffect(() => {
     setList([...initList]);
   }, [initList]);
 
   const handleSort = (sortType = true) => {
-    let newList = [];
+    let newList: any[] = [];
     if (sortType) {
       newList = list.sort((a, b) => (a.v1 > b.v1 ? 1 : a.v1 < b.v1 ? -1 : 0));
     } else {
@@ -189,7 +188,7 @@ function IrregularVerb() {
     setList([...newList]);
   };
 
-  const handleSearch = (word) => {
+  const handleSearch = (word: string) => {
     const foundList = initList.filter((item) => {
       const chainStr = `${item.v1} $${item.v2} ${item.v3} ${item.mean}`;
       return chainStr.toLowerCase().indexOf(word.toLowerCase()) !== -1;
@@ -198,7 +197,7 @@ function IrregularVerb() {
     setList([...foundList]);
   };
 
-  const handleFilter = (type) => {
+  const handleFilter = (type: any) => {
     const newList = filterIrregularList(initList, type);
     setList([...newList]);
   };

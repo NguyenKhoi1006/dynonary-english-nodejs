@@ -23,7 +23,7 @@ async def get_stats() -> Dict[str, Any]:
 
     for doc in users_all:
         data = doc.to_dict()
-        role = data.get("role", "learner")
+        role = data.get("role", "student")
         if role == "admin":
             admin_count += 1
         else:

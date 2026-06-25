@@ -20,7 +20,6 @@ function SettingModal({ open = false, onClose = () => {} }) {
       }}
       onClose={onClose}
       aria-labelledby="setting dialog"
-      disableBackdropClick={true}
       maxWidth="md"
       open={open}>
       <div className={`${classes.title} flex-center-between`}>

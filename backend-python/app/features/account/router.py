@@ -6,6 +6,7 @@ from app.features.account.schema import (
     UpdateCoinRequest,
     UpdateAvtRequest,
     MessageResponse,
+    VerifyCodeRequest,
 )
 from app.features.account import service as account_service
 from app.dependencies import verify_firebase_token
@@ -47,13 +48,14 @@ async def update_profile(
     user: dict = Depends(verify_firebase_token),
 ):
     uid = user.get("uid", "")
-    if not body.name and not body.username:
+    if not body.name and not body.username and not body.role:
         raise HTTPException(status_code=400, detail="Nothing to update")
     
     result = await account_service.update_user_profile(
         uid=uid,
         name=body.name or "",
         new_username=body.username or "",
+        new_role=body.role or "",
     )
     if not result.get("status"):
         raise HTTPException(status_code=400, detail=result.get("message", "Update failed"))

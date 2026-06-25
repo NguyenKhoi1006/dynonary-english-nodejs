@@ -3,7 +3,7 @@ import Speaker from 'components/UI/Speaker';
 import React from 'react';
 import useStyle from './style';
 
-function CommunicationPhraseItem({ mean, sentence }) {
+function CommunicationPhraseItem({ mean, sentence }: { mean: any; sentence: any }) {
   const classes = useStyle();
   return (
     <div className={`${classes.root} flex-center-between`}>

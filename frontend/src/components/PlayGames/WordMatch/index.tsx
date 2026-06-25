@@ -14,8 +14,8 @@ import CorrectWordResult from '../Result';
 import SplitWord from './SplitWord';
 import useStyle from './style';
 
-function WordMatchGame({ list }) {
-  const { voice, speed, volume } = useSelector((state) => state.voice);
+function WordMatchGame({ list }: { list: any }) {
+  const { voice, speed, volume } = useSelector((state: any) => state.voice);
   const classes = useStyle();
   const nQuestion = list.length;
   const [state, setState] = useState({

@@ -16,6 +16,14 @@ function FavoriteDictionary({
   isFirstLoad,
   onSortTypeChange,
   onSearchWord,
+}: {
+  list: any;
+  loading: any;
+  onLoadData: any;
+  more: any;
+  isFirstLoad: any;
+  onSortTypeChange: any;
+  onSearchWord: any;
 }) {
   const classes = useStyle();
 
@@ -47,7 +55,7 @@ function FavoriteDictionary({
                   {list && list.length > 0 ? (
                     <>
                       {/* render list */}
-                      {list.map((item, index) => (
+                      {list.map((item: any, index: number) => (
                         <li className={classes.listItem} key={index}>
                           <DynoDictionaryItemData {...item} />
                         </li>

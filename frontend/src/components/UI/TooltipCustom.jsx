@@ -41,6 +41,9 @@ function TooltipCustom(props) {
 
 TooltipCustom.propTypes = {
   children: PropTypes.any,
+  title: PropTypes.any,
+  className: PropTypes.string,
+  placement: PropTypes.string,
 };
 
 export default TooltipCustom;

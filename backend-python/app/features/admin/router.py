@@ -6,7 +6,6 @@ from app.features.admin.activity.router import router as activity_router
 from app.features.admin.materials.router import router as materials_router
 from app.features.admin.tests.router import router as tests_router
 from app.features.admin.media.router import router as media_router
-from app.features.admin.auth.router import router as auth_router
 from app.features.admin.topics.router import router as admin_topics_router
 from app.features.admin.irregular_verbs.router import router as admin_verbs_router
 from app.features.admin.words.router import router as admin_words_router
@@ -21,9 +20,6 @@ admin_router = APIRouter()
 async def admin_health():
     return {"status": "ok", "service": "dynonary-admin-api"}
 
-
-# Auth routes — no admin auth required
-admin_router.include_router(auth_router)
 
 # All routes below require admin authentication
 admin_router.include_router(users_router)

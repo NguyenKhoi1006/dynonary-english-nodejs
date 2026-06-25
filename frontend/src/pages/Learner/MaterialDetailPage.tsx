@@ -141,7 +141,7 @@ export default function MaterialDetailPage() {
     B1: { name: 'Intermediate', color: '#956400' },
     B2: { name: 'Upper Intermediate', color: '#9F2F2D' },
     C1: { name: 'Advanced', color: '#5E3A8A' },
-    C2: { name: 'Proficient', color: '#2F3437' },
+    C2: { name: 'Proficient', color: '#0A1F2E' },
   };
 
   if (loading) {
@@ -158,13 +158,13 @@ export default function MaterialDetailPage() {
   if (!material) {
     return (
       <Box sx={{ p: 4, maxWidth: 760, mx: 'auto', textAlign: 'center' }}>
-        <Typography color="#787774">Không tìm thấy tài liệu.</Typography>
+        <Typography color="#6B7280">Không tìm thấy tài liệu.</Typography>
         <Button onClick={() => navigate('/materials')} sx={{ mt: 2 }}>Quay lại khoá học</Button>
       </Box>
     );
   }
 
-  const meta = levelMeta[material.level] || { name: material.level, color: '#787774' };
+  const meta = levelMeta[material.level] || { name: material.level, color: '#6B7280' };
 
   return (
     <Box sx={{ p: { xs: 0, md: 4 }, maxWidth: 760, mx: 'auto' }}>
@@ -177,11 +177,11 @@ export default function MaterialDetailPage() {
           px: { xs: 2, md: 0 },
           pt: { xs: 1.5, md: 0 },
           pb: { xs: 1, md: 2 },
-          borderBottom: { xs: '1px solid #EAEAEA', md: 'none' },
+          borderBottom: { xs: '1px solid #E8E5DF', md: 'none' },
           mb: { xs: 1.5, md: 2 },
         }}
       >
-        <IconButton size="small" onClick={() => navigate('/materials')} sx={{ color: '#787774' }}>
+        <IconButton size="small" onClick={() => navigate('/materials')} sx={{ color: '#6B7280' }}>
           <ArrowBackIcon sx={{ fontSize: 20 }} />
         </IconButton>
         <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -194,7 +194,7 @@ export default function MaterialDetailPage() {
               {material.level} — {meta.name}
             </Typography>
             {material.estimatedMinutes && (
-              <Typography variant="caption" sx={{ color: '#BBBBBB', fontSize: '0.85rem' }}>
+              <Typography variant="caption" sx={{ color: '#9CA3AF', fontSize: '0.85rem' }}>
                 · {material.estimatedMinutes} phút
               </Typography>
             )}
@@ -204,7 +204,7 @@ export default function MaterialDetailPage() {
             sx={{
               fontWeight: 700,
               fontSize: '1.05rem',
-              color: '#2F3437',
+              color: '#0A1F2E',
               mt: 0.2,
               lineHeight: 1.3,
             }}
@@ -224,8 +224,8 @@ export default function MaterialDetailPage() {
         value={progressPct}
         sx={{
           height: 2,
-          backgroundColor: '#EDEDEA',
-          '& .MuiLinearProgress-bar': { backgroundColor: '#2F3437' },
+          backgroundColor: '#E8E5DF',
+          '& .MuiLinearProgress-bar': { backgroundColor: '#0A1F2E' },
           mb: 0,
           borderRadius: 0,
         }}
@@ -253,7 +253,7 @@ export default function MaterialDetailPage() {
           left: 0,
           right: 0,
           backgroundColor: '#FFFFFF',
-          borderTop: '1px solid #EAEAEA',
+          borderTop: '1px solid #E8E5DF',
           px: { xs: 2, md: 0 },
           py: { xs: 1.5, md: 2 },
           zIndex: 100,
@@ -265,13 +265,13 @@ export default function MaterialDetailPage() {
             size="small"
             disabled={!prevMaterial}
             onClick={() => prevMaterial && goTo(prevMaterial.id)}
-            sx={{ color: prevMaterial ? '#2F3437' : '#CCCCCC' }}
+            sx={{ color: prevMaterial ? '#0A1F2E' : '#D1D5DB' }}
           >
             <ArrowBackIosIcon sx={{ fontSize: 18 }} />
           </IconButton>
 
           {/* Position indicator */}
-          <Typography variant="caption" sx={{ color: '#BBBBBB', fontWeight: 600, minWidth: 60, textAlign: 'center' }}>
+          <Typography variant="caption" sx={{ color: '#9CA3AF', fontWeight: 600, minWidth: 60, textAlign: 'center' }}>
             {currentIdx >= 0 ? `${currentIdx + 1}/${siblings.length}` : ''}
           </Typography>
 
@@ -280,7 +280,7 @@ export default function MaterialDetailPage() {
             size="small"
             disabled={!nextMaterial}
             onClick={() => nextMaterial && goTo(nextMaterial.id)}
-            sx={{ color: nextMaterial ? '#2F3437' : '#CCCCCC' }}
+            sx={{ color: nextMaterial ? '#0A1F2E' : '#D1D5DB' }}
           >
             <ArrowForwardIosIcon sx={{ fontSize: 18 }} />
           </IconButton>
@@ -298,10 +298,10 @@ export default function MaterialDetailPage() {
               textTransform: 'none',
               fontWeight: 700,
 fontSize: '0.95rem',
-              backgroundColor: completed ? 'transparent' : '#2F3437',
+              backgroundColor: completed ? 'transparent' : '#0A1F2E',
               color: completed ? '#346538' : '#FFFFFF',
               '&:hover': {
-                backgroundColor: completed ? 'transparent' : '#1a1d1f',
+                backgroundColor: completed ? 'transparent' : '#152433',
               },
               px: 2,
               py: 0.8,

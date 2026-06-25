@@ -13,6 +13,13 @@ function DynoDictionaryItem({
   picture,
   mean,
   onShowDetail,
+}: {
+  word: any;
+  type: any;
+  phonetic: any;
+  picture: any;
+  mean: any;
+  onShowDetail: any;
 }) {
   const classes = useStyle();
   const imgSrc = cloudinaryImgOptimize(

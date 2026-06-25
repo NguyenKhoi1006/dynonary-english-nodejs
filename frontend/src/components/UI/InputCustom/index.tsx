@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import useStyle from './style';
 
-function InputCustom(props) {
+function InputCustom(props: any) {
   const { endAdornment, error, inputProps, ...propRest } = props;
   const classes = useStyle();
 
@@ -26,15 +26,29 @@ function InputCustom(props) {
 }
 
 InputCustom.propTypes = {
-  endAdornment: PropTypes.any,
+  className: PropTypes.string,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  size: PropTypes.string,
+  multiline: PropTypes.bool,
   error: PropTypes.bool,
+  endAdornment: PropTypes.any,
   inputProps: PropTypes.any,
+  onChange: PropTypes.func,
+  defaultValue: PropTypes.any,
 };
 
 InputCustom.defaultProps = {
-  endAdornment: null,
+  className: '',
+  label: '',
+  placeholder: '',
+  size: 'small',
+  multiline: false,
   error: false,
+  endAdornment: null,
   inputProps: {},
+  onChange: function () {},
+  defaultValue: '',
 };
 
 export default InputCustom;

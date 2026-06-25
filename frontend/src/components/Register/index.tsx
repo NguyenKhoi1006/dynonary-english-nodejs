@@ -1,18 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import CircularProgress from '@mui/material/CircularProgress';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LoopIcon from '@mui/icons-material/Loop';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SocialNetworkLogin from 'components/Login/SocialNetwork';
-import InputCustom from 'components/UI/InputCustom';
 import { MAX, MIN, REGEX } from 'constant';
-import PropTypes from 'prop-types';
+import { tokens } from 'shared/configs/theme';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { makeStyles } from '@mui/styles';
-import { formStyle } from 'components/UI/style';
 
 const schema = yup.object().shape({
   email: yup
@@ -35,9 +37,7 @@ const schema = yup.object().shape({
     .max(MAX.PASSWORD_LEN, `Mật khẩu tối đa ${MAX.PASSWORD_LEN}`),
 });
 
-function Register({ onRegister, loading }) {
-  const classes = makeStyles(formStyle)();
-
+function Register({ onRegister, loading }: { onRegister: any; loading: any }) {
   const [visiblePw, setVisiblePw] = useState(false);
   const {
     register,
@@ -48,104 +48,126 @@ function Register({ onRegister, loading }) {
   });
 
   return (
-    <form
-      className={`${classes.root} flex-col`}
+    <Box
+      component="form"
       onSubmit={handleSubmit(onRegister)}
-      autoComplete="off">
-      <div className="flex-col">
-        <h1 className={`${classes.title} t-center`}>Tạo tài khoản</h1>
-        <div className="t-center mt-5">
-          <AccountCircleIcon className={classes.labelIcon} />
-        </div>
-      </div>
-
-      <div className="flex-col">
-        <InputCustom
-          label="Email"
-          size="small"
-          placeholder="Nhập email"
-          error={Boolean(errors.email)}
-          inputProps={{
-            name: 'email',
-            maxLength: MAX.EMAIL_LEN,
-            autoFocus: true,
-            ...register('email'),
+      autoComplete="off"
+      sx={{
+        '& > *:not(:last-child)': { mb: 2.5 },
+      }}
+    >
+      {/* Header */}
+      <Box sx={{ textAlign: 'center', mb: 1 }}>
+        <Box
+          sx={{
+            width: 44,
+            height: 44,
+            borderRadius: 1.5,
+            backgroundColor: `${tokens.navy}10`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mx: 'auto',
+            mb: 1.5,
           }}
-        />
-        {errors.email && <p className="text-error">{errors.email?.message}</p>}
-      </div>
+        >
+          <AccountCircleIcon sx={{ fontSize: 22, color: tokens.navy }} />
+        </Box>
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: 700, fontSize: '1.8rem', color: tokens.charcoal }}
+        >
+          Tạo tài khoản
+        </Typography>
+        <Typography sx={{ fontSize: '1.2rem', color: tokens.stone, mt: 0.3 }}>
+          Bắt đầu hành trình học tiếng Anh
+        </Typography>
+      </Box>
 
-      <div className="flex-col">
-        <InputCustom
-          label="Họ tên"
-          size="small"
-          placeholder="Nhập họ tên"
-          error={Boolean(errors.name)}
-          inputProps={{
-            name: 'name',
-            maxLength: MAX.NAME_LEN,
-            ...register('name'),
-          }}
-        />
-        {errors.name && <p className="text-error">{errors.name?.message}</p>}
-      </div>
+      {/* Email */}
+      <TextField
+        fullWidth
+        label="Email"
+        size="small"
+        placeholder="Nhập email"
+        error={Boolean(errors.email)}
+        helperText={errors.email?.message}
+        inputProps={{ maxLength: MAX.EMAIL_LEN, autoFocus: true, ...register('email') }}
+      />
 
-      <div className="flex-col">
-        <InputCustom
-          label="Mật khẩu"
-          size="small"
-          placeholder="Nhập mật khẩu"
-          error={Boolean(errors.password)}
-          inputProps={{
-            name: 'password',
-            maxLength: MAX.PASSWORD_LEN,
-            type: visiblePw ? 'text' : 'password',
-            ...register('password'),
-          }}
-          endAdornment={
-            visiblePw ? (
-              <VisibilityIcon
-                className={`${classes.icon} ${classes.visiblePw}`}
-                onClick={() => setVisiblePw(false)}
-              />
-            ) : (
-              <VisibilityOffIcon
-                className={classes.icon}
-                onClick={() => setVisiblePw(true)}
-              />
-            )
-          }
-        />
-        {errors.password && (
-          <p className="text-error">{errors.password?.message}</p>
-        )}
-      </div>
+      {/* Name */}
+      <TextField
+        fullWidth
+        label="Họ tên"
+        size="small"
+        placeholder="Nhập họ tên"
+        error={Boolean(errors.name)}
+        helperText={errors.name?.message}
+        inputProps={{ maxLength: MAX.NAME_LEN, ...register('name') }}
+      />
 
+      {/* Password */}  
+      <TextField
+        fullWidth
+        label="Mật khẩu"
+        size="small"
+        placeholder="Nhập mật khẩu"
+        type={visiblePw ? 'text' : 'password'}
+        error={Boolean(errors.password)}
+        helperText={errors.password?.message}
+        inputProps={{ maxLength: MAX.PASSWORD_LEN, ...register('password') }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => setVisiblePw(!visiblePw)}
+                edge="end"
+                size="small"
+                sx={{ color: tokens.iron }}
+              >
+                {visiblePw ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      {/* Submit */}
       <Button
-        className="_btn _btn-primary"
         type="submit"
         variant="contained"
         color="primary"
         disabled={loading}
-        endIcon={loading && <LoopIcon className="ani-spin" />}
-        size="large">
-        Đăng ký
+        fullWidth
+        size="large"
+        sx={{ py: 1.4 }}
+      >
+        {loading ? (
+          <CircularProgress size={22} sx={{ color: tokens.white }} />
+        ) : (
+          'Tạo tài khoản'
+        )}
       </Button>
 
-      <div className="or-option w-100 t-center">HOẶC</div>
+      {/* Divider */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1.5,
+          my: 1,
+        }}
+      >
+        <Box sx={{ flex: 1, height: 1, backgroundColor: tokens.bone }} />
+        <Typography sx={{ fontSize: '1.1rem', color: tokens.stone, fontWeight: 500 }}>
+          HOẶC
+        </Typography>
+        <Box sx={{ flex: 1, height: 1, backgroundColor: tokens.bone }} />
+      </Box>
+
       <SocialNetworkLogin />
-    </form>
+    </Box>
   );
 }
-
-Register.propTypes = {
-  onRegister: PropTypes.func,
-  loading: PropTypes.bool,
-};
-
-Register.defaultProps = {
-  onRegister: function () {},
-  loading: false,
-};
 
 export default Register;

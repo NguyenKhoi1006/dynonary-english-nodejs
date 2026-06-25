@@ -8,15 +8,15 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import useStyle from './style';
 
-function WordSortModal({ classNameIcon, onSelect }) {
+function WordSortModal({ classNameIcon, onSelect }: { classNameIcon: any; onSelect: any }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyle();
 
-  const handleOpenModal = (event) => {
+  const handleOpenModal = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = (v) => {
+  const handleClose = (v: any) => {
     setAnchorEl(null);
     if (typeof v === 'string') {
       onSelect(v);

@@ -9,32 +9,34 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-
-import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 import LinearProgress from '@mui/material/LinearProgress';
+import Container from '@mui/material/Container';
 
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import SchoolIcon from '@mui/icons-material/School';
-
 import LockIcon from '@mui/icons-material/Lock';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ExtensionIcon from '@mui/icons-material/Extension';
-import LandingPage from 'features/home/LandingPage';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
-// ─── Feature grid (shown for guests or as supplement tools) ───
+import LandingPage from 'features/home/LandingPage';
+import { tokens } from 'shared/configs/theme';
+
+// ─── Feature grid (supplement tools) ───
 import communicateIcon from 'assets/icons/communicate.png';
 import dictionaryIcon from 'assets/icons/dictionary.png';
 import editIcon from 'assets/icons/edit.png';
 import favoriteIcon from 'assets/icons/favorite.png';
 import flashcardIcon from 'assets/icons/flashcard.png';
-import friendsIcon from 'assets/icons/friends.png';
 import gameIcon from 'assets/icons/game.png';
 import grammarIcon from 'assets/icons/grammar.png';
 import ipaIcon from 'assets/icons/ipa.png';
@@ -59,17 +61,21 @@ const FEATURE_LIST = [
 
 const LEVEL_ORDER = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const LEVEL_NAMES = { A1: 'Beginner', A2: 'Elementary', B1: 'Intermediate', B2: 'Upper Intermediate', C1: 'Advanced', C2: 'Proficient' };
-const LEVEL_COLORS = { A1: '#4caf50', A2: '#8bc34a', B1: '#ff9800', B2: '#ff5722', C1: '#9c27b0', C2: '#e91e63' };
+const LEVEL_COLORS = { A1: tokens.emerald, A2: tokens.info, B1: tokens.warning, B2: tokens.coral, C1: '#7C3AED', C2: tokens.navy };
 
+// ─── Level Path ───
 function LevelPath({ levels, currentLevel }) {
   return (
-    <Card sx={{ borderRadius: 3 }}>
-      <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-        <Typography variant="h6" fontWeight={700} gutterBottom>
-          <SchoolIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-          Lộ trình học A1 → C2
-        </Typography>
-        <Stack spacing={1.5} sx={{ mt: 2 }}>
+    <Card sx={{ borderRadius: 3, overflow: 'visible' }}>
+      <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2.5 }}>
+          <SchoolIcon sx={{ fontSize: 22, color: tokens.navy }} />
+          <Typography variant="h6" fontWeight={700} sx={{ fontSize: '1.5rem' }}>
+            Lộ trình học A1 → C2
+          </Typography>
+        </Stack>
+
+        <Stack spacing={1.8}>
           {LEVEL_ORDER.map((lvl, idx) => {
             const data = levels?.[lvl];
             const isCompleted = data?.status === 'completed';
@@ -80,52 +86,76 @@ function LevelPath({ levels, currentLevel }) {
 
             return (
               <Box key={lvl}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  {/* Level badge */}
-                  <Box
-                    sx={{
-                      width: 48, height: 48, borderRadius: '50%', display: 'flex',
-                      alignItems: 'center', justifyContent: 'center', fontWeight: 800,
-                      fontSize: '0.95rem', flexShrink: 0,
-                      bgcolor: isCompleted ? color : isCurrent ? `${color}22` : isLocked ? '#f0f0f0' : `${color}15`,
-                      color: isCompleted ? '#fff' : isLocked ? '#bbb' : color,
-                      border: isCurrent ? `3px solid ${color}` : 'none',
-                      boxShadow: isCurrent ? `0 0 0 3px ${color}44` : 'none',
-                      transition: 'all 0.3s',
-                    }}
-                  >
-                    {isCompleted ? <CheckCircleIcon fontSize="small" /> : lvl}
-                  </Box>
+                <Stack direction="row" spacing={1.5} alignItems="stretch">
+                  {/* Timeline dot */}
+                  <Stack alignItems="center" sx={{ width: 40, flexShrink: 0 }}>
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 800,
+                        fontSize: '0.9rem',
+                        flexShrink: 0,
+                        bgcolor: isCompleted ? color : isCurrent ? `${color}18` : tokens.cloud,
+                        color: isCompleted ? tokens.white : isLocked ? tokens.iron : color,
+                        border: isCurrent ? `2.5px solid ${color}` : 'none',
+                        boxShadow: isCurrent ? `0 0 0 4px ${color}25` : 'none',
+                        transition: 'all 0.3s',
+                      }}
+                    >
+                      {isCompleted ? <CheckCircleIcon sx={{ fontSize: 20 }} /> : lvl}
+                    </Box>
+                    {/* Connector */}
+                    {idx < LEVEL_ORDER.length - 1 && (
+                      <Box
+                        sx={{
+                          flex: 1,
+                          width: 2,
+                          minHeight: 16,
+                          bgcolor: isCompleted ? color : tokens.bone,
+                        }}
+                      />
+                    )}
+                  </Stack>
 
-                  {/* Level info */}
-                  <Box sx={{ flex: 1, minWidth: 0 }}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                      <Typography variant="body2" fontWeight={600}>
+                  {/* Content */}
+                  <Box sx={{ flex: 1, minWidth: 0, pb: idx < LEVEL_ORDER.length - 1 ? 0.5 : 0 }}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 0.3 }}>
+                      <Typography variant="body2" fontWeight={700} sx={{ fontSize: '1.25rem', color: tokens.charcoal }}>
                         {lvl} — {LEVEL_NAMES[lvl]}
                       </Typography>
                       <Chip
                         label={isCompleted ? 'Hoàn thành' : isCurrent ? 'Đang học' : isLocked ? 'Khoá' : 'Sẵn sàng'}
                         size="small"
-                        color={isCompleted ? 'success' : isCurrent ? 'primary' : 'default'}
-                        variant={isLocked ? 'outlined' : 'filled'}
-                        sx={{ height: 22, '& .MuiChip-label': { fontSize: '0.85rem', px: 1 } }}
+                        sx={{
+                          height: 22,
+                          fontSize: '0.8rem',
+                          fontWeight: 600,
+                          bgcolor: isCompleted ? `${color}18` : isCurrent ? `${color}15` : tokens.cloud,
+                          color: isCompleted ? color : isCurrent ? color : tokens.stone,
+                          borderRadius: 1,
+                        }}
                       />
                     </Stack>
                     {!isLocked && (
                       <LinearProgress
                         variant="determinate"
                         value={isCompleted ? 100 : progress}
-                        sx={{ height: 4, borderRadius: 2, mt: 0.5, bgcolor: '#eee' }}
-                        color={isCompleted ? 'success' : 'primary'}
+                        sx={{
+                          height: 4,
+                          borderRadius: 2,
+                          mt: 0.5,
+                          bgcolor: tokens.bone,
+                          '& .MuiLinearProgress-bar': { bgcolor: color },
+                        }}
                       />
                     )}
                   </Box>
                 </Stack>
-
-                {/* Connector line */}
-                {idx < LEVEL_ORDER.length - 1 && (
-                  <Box sx={{ pl: '24px', ml: '24px', height: 12, borderLeft: '2px dashed', borderColor: isCompleted ? color : '#ddd' }} />
-                )}
               </Box>
             );
           })}
@@ -135,13 +165,14 @@ function LevelPath({ levels, currentLevel }) {
   );
 }
 
+// ─── Continue Learning ───
 function ContinueLearning({ materials, loading, currentLevel, progress }) {
   const navigate = useNavigate();
 
-  const LEVEL_COLORS = { A1: '#346538', A2: '#1F6C9F', B1: '#956400', B2: '#9F2F2D', C1: '#5E3A8A', C2: '#2F3437' };
-  const LEVEL_NAMES_SHORT = { A1: 'Beginner', A2: 'Elementary', B1: 'Intermediate', B2: 'Upper Int.', C1: 'Advanced', C2: 'Proficient' };
+  const mapColor = { A1: tokens.emerald, A2: tokens.info, B1: tokens.warning, B2: tokens.coral, C1: '#7C3AED', C2: tokens.navy };
+  const mapName = { A1: 'Beginner', A2: 'Elementary', B1: 'Intermediate', B2: 'Upper Int.', C1: 'Advanced', C2: 'Proficient' };
 
-  const color = LEVEL_COLORS[currentLevel] || '#2F3437';
+  const color = mapColor[currentLevel] || tokens.navy;
   const levelData = progress?.levels?.[currentLevel];
   const total = materials.length;
   const done = levelData?.materialsCompleted?.length || 0;
@@ -149,8 +180,8 @@ function ContinueLearning({ materials, loading, currentLevel, progress }) {
 
   if (loading) {
     return (
-      <Card sx={{ borderRadius: '8px', border: '1px solid #EAEAEA', boxShadow: 'none' }}>
-        <CardContent>
+      <Card sx={{ borderRadius: 3 }}>
+        <CardContent sx={{ p: 3 }}>
           <Skeleton height={24} width="50%" />
           <Skeleton height={48} sx={{ mt: 1 }} />
         </CardContent>
@@ -159,94 +190,128 @@ function ContinueLearning({ materials, loading, currentLevel, progress }) {
   }
 
   return (
-    <Card sx={{ borderRadius: '8px', border: '1px solid #EAEAEA', boxShadow: 'none', backgroundColor: '#FFFFFF' }}>
-      <CardContent sx={{ p: 2.5 }}>
-        {/* Header with level badge */}
+    <Card
+      sx={{
+        borderRadius: 3,
+        overflow: 'visible',
+        position: 'relative',
+      }}
+    >
+      <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
+        {/* Header */}
         <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2 }}>
           <Box
             sx={{
-              width: 40, height: 40, borderRadius: '8px', display: 'flex',
-              alignItems: 'center', justifyContent: 'center',
-              backgroundColor: `${color}15`, flexShrink: 0,
+              width: 38,
+              height: 38,
+              borderRadius: 1.5,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: `${color}15`,
+              flexShrink: 0,
             }}
           >
-            <Typography variant="subtitle2" sx={{ fontWeight: 800, fontSize: '0.95rem', color, fontFamily: "'Playfair Display', serif" }}>
+            <Typography
+              variant="subtitle2"
+              sx={{ fontWeight: 800, fontSize: '0.9rem', color, fontFamily: "'Playfair Display', serif" }}
+            >
               {currentLevel}
             </Typography>
           </Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#2F3437' }}>
-              Học tiếp
-            </Typography>
-            <Typography variant="caption" sx={{ color: '#787774', fontSize: '0.85rem' }}>
-              {LEVEL_NAMES_SHORT[currentLevel]} · {done}/{total} bài
-            </Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+              <Box>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '1.3rem', color: tokens.charcoal }}>
+                  Học tiếp
+                </Typography>
+                <Typography variant="caption" sx={{ fontSize: '1rem', color: tokens.stone }}>
+                  {mapName[currentLevel]} · {done}/{total} bài
+                </Typography>
+              </Box>
+              <Button
+                size="small"
+                onClick={() => navigate(ROUTES.LEARNER.MATERIALS)}
+                endIcon={<ArrowForwardIcon sx={{ fontSize: 16 }} />}
+                sx={{ color: tokens.stone, fontSize: '1.05rem', fontWeight: 600, textTransform: 'none', p: 0.6, minWidth: 'auto', '&:hover': { color: tokens.charcoal, bgcolor: 'transparent' } }}
+              >
+                Xem tất cả
+              </Button>
+            </Stack>
           </Box>
-          <Button
-            size="small"
-            onClick={() => navigate(ROUTES.LEARNER.MATERIALS)}
-            sx={{ color: '#787774', fontSize: '0.85rem', textTransform: 'none', fontWeight: 600, p: 0, minWidth: 'auto', '&:hover': { backgroundColor: 'transparent', color: '#2F3437' } }}
-          >
-            Xem tất cả →
-          </Button>
         </Stack>
 
-        {/* Progress bar */}
+        {/* Progress */}
         <LinearProgress
           variant="determinate"
           value={pct}
           sx={{
-            height: 4, borderRadius: 2, mb: 2,
-            backgroundColor: '#EDEDEA',
-            '& .MuiLinearProgress-bar': { backgroundColor: color },
+            height: 5,
+            borderRadius: 3,
+            mb: 2.5,
+            bgcolor: tokens.bone,
+            '& .MuiLinearProgress-bar': { bgcolor: color },
           }}
         />
 
-        {/* Lesson list */}
+        {/* Lessons */}
         {materials.length === 0 ? (
-          <Typography variant="body2" sx={{ color: '#BBBBBB', textAlign: 'center', py: 3, fontSize: '0.95rem' }}>
+          <Typography variant="body2" sx={{ color: tokens.iron, textAlign: 'center', py: 4, fontSize: '1.1rem' }}>
             Chưa có bài học nào.
           </Typography>
         ) : (
-          <Stack spacing={1}>
+          <Stack spacing={0.5}>
             {materials.slice(0, 5).map((m, idx) => {
               const isDone = done > idx;
               return (
                 <Box
                   key={m.id}
                   sx={{
-                    display: 'flex', alignItems: 'center', gap: 1.5, px: 1.5, py: 1.2,
-                    borderRadius: '6px', cursor: 'pointer',
-                    transition: 'background-color 0.15s',
-                    '&:hover': { backgroundColor: '#F7F6F3' },
+                    display: 'flex', alignItems: 'center', gap: 1.5,
+                    px: 1.5, py: 1.2,
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                    '&:hover': { backgroundColor: tokens.cloud },
                   }}
                   onClick={() => navigate(`/materials/${m.id}`)}
                 >
-                  {/* Number / status */}
-                  <Box sx={{ width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {/* Status */}
+                  <Box
+                    sx={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                      bgcolor: isDone ? `${color}18` : tokens.cloud,
+                      color: isDone ? color : tokens.iron,
+                    }}
+                  >
                     {isDone ? (
-                      <CheckCircleIcon sx={{ fontSize: 18, color }} />
+                      <CheckCircleIcon sx={{ fontSize: 16 }} />
                     ) : (
-                      <Box sx={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid #DDD', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 700, color: '#BBB' }}>{idx + 1}</Typography>
-                      </Box>
+                      <Typography sx={{ fontSize: '0.75rem', fontWeight: 700 }}>{idx + 1}</Typography>
                     )}
                   </Box>
+
                   {/* Title */}
                   <Typography
                     variant="body2"
                     sx={{
-                      flex: 1, minWidth: 0, fontSize: '0.95rem', fontWeight: 600,
-                      color: isDone ? '#787774' : '#2F3437',
+                      flex: 1, minWidth: 0, fontSize: '1.15rem', fontWeight: 600,
+                      color: isDone ? tokens.stone : tokens.charcoal,
                       textDecoration: isDone ? 'line-through' : 'none',
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                     }}
                   >
                     {m.title}
                   </Typography>
-                  {/* Time */}
+
                   {m.estimatedMinutes && (
-                    <Typography variant="caption" sx={{ color: '#BBB', fontSize: '0.85rem', flexShrink: 0 }}>
+                    <Typography variant="caption" sx={{ color: tokens.iron, fontSize: '1rem', flexShrink: 0 }}>
                       {m.estimatedMinutes}p
                     </Typography>
                   )}
@@ -260,6 +325,7 @@ function ContinueLearning({ materials, loading, currentLevel, progress }) {
   );
 }
 
+// ─── Learner Home ───
 function LearnerHome() {
   const navigate = useNavigate();
   const { name, level: currentLevel, xp, isAuth } = useSelector((s) => s.userInfo);
@@ -291,7 +357,7 @@ function LearnerHome() {
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
-        <CircularProgress />
+        <CircularProgress sx={{ color: tokens.navy }} />
       </Box>
     );
   }
@@ -299,45 +365,78 @@ function LearnerHome() {
   const levels = progress?.levels || {};
   const totalXp = progress?.totalXp || xp || 0;
   const totalStudyDays = progress?.totalStudyDays || 0;
-
   const hasLevel = !!currentLevel;
   const completedCount = LEVEL_ORDER.filter((l) => levels[l]?.status === 'completed').length;
 
   const stats = [
-    { icon: <WhatshotIcon sx={{ color: '#ff9800' }} />, value: totalXp, label: 'XP' },
-    { icon: <AutoStoriesIcon sx={{ color: '#1976d2' }} />, value: currentLevel || '—', label: 'Cấp độ' },
-    { icon: <EmojiEventsIcon sx={{ color: '#4caf50' }} />, value: totalStudyDays, label: 'Ngày học' },
-    { icon: <CheckCircleIcon sx={{ color: '#9c27b0' }} />, value: `${completedCount}/${LEVEL_ORDER.length}`, label: 'Cấp đã qua' },
+    { icon: <TrendingUpIcon />, value: totalXp, label: 'XP', color: tokens.xp, bg: tokens.xpLight },
+    { icon: <SchoolIcon />, value: currentLevel || '—', label: 'Cấp độ', color: tokens.navy, bg: `${tokens.navy}12` },
+    { icon: <WhatshotIcon />, value: totalStudyDays, label: 'Ngày học', color: tokens.streak, bg: `${tokens.streak}18` },
+    { icon: <CheckCircleIcon />, value: `${completedCount}/${LEVEL_ORDER.length}`, label: 'Cấp đã qua', color: tokens.emerald, bg: tokens.emeraldLight },
   ];
 
   return (
-    <Box className="container" sx={{ py: { xs: 2, md: 4 } }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 2.5, md: 4 } }}>
       {/* ── Hero ── */}
-      <Card sx={{ borderRadius: 3, mb: 3, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: '#fff' }}>
-        <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ sm: 'center' }} spacing={2}>
+      <Card
+        sx={{
+          borderRadius: 3,
+          mb: 3.5,
+          background: `linear-gradient(135deg, ${tokens.navy} 0%, ${tokens.navyLight} 100%)`,
+          color: tokens.white,
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        {/* Decorative circles */}
+        <Box sx={{ position: 'absolute', top: -60, right: -40, width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${tokens.gold}12 0%, transparent 70%)`, pointerEvents: 'none' }} />
+        <Box sx={{ position: 'absolute', bottom: -80, left: -30, width: 160, height: 160, borderRadius: '50%', background: `radial-gradient(circle, ${tokens.coral}10 0%, transparent 70%)`, pointerEvents: 'none' }} />
+
+        <CardContent sx={{ p: { xs: 3, md: 4 }, position: 'relative', zIndex: 1 }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ sm: 'center' }} spacing={2.5}>
             <Box>
-              <Typography variant="h5" fontWeight={700}>
-                Chào bạn, {name || 'học viên'} 👋
+              <Typography variant="h4" fontWeight={700} sx={{ fontFamily: "'Playfair Display', serif", color: tokens.white, fontSize: { xs: '2rem', md: '2.4rem' } }}>
+                Chào bạn, {name || 'học viên'}
               </Typography>
-              <Typography variant="body1" sx={{ mt: 0.5, opacity: 0.9 }}>
+              <Typography variant="body1" sx={{ mt: 0.5, opacity: 0.8, color: tokens.white, fontSize: '1.3rem' }}>
                 {hasLevel
-                  ? `Đang học ở trình độ ${currentLevel} — ${LEVEL_NAMES[currentLevel]}. Cố lên nhé!`
-                  : 'Bạn chưa có trình độ. Hãy làm bài kiểm tra đầu vào để bắt đầu!'}
+                  ? `Đang học trình độ ${currentLevel} — ${LEVEL_NAMES[currentLevel]}`
+                  : 'Bạn chưa có trình độ. Hãy làm bài kiểm tra đầu vào!'}
               </Typography>
             </Box>
-            <Stack direction="row" spacing={1.5}>
+            <Stack direction="row" spacing={1.5} flexShrink={0}>
               {!hasLevel ? (
-                <Button variant="contained" color="warning" size="large" onClick={() => navigate(ROUTES.LEARNER.PLACEMENT)}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => navigate(ROUTES.LEARNER.PLACEMENT)}
+                  sx={{
+                    backgroundColor: tokens.gold,
+                    color: tokens.navyDark,
+                    fontWeight: 700,
+                    px: 3.5,
+                    '&:hover': { backgroundColor: tokens.goldDark },
+                  }}
+                >
                   Kiểm tra đầu vào
                 </Button>
               ) : (
                 <>
-                  <Button variant="contained" color="warning" onClick={() => navigate(ROUTES.LEARNER.PROGRESS)}>
-                    Lộ trình
+                  <Button
+                    variant="contained"
+                    onClick={() => navigate(ROUTES.LEARNER.MATERIALS)}
+                    sx={{ backgroundColor: 'rgba(255,255,255,0.15)', color: tokens.white, backdropFilter: 'blur(4px)', '&:hover': { backgroundColor: 'rgba(255,255,255,0.25)' } }}
+                    startIcon={<MenuBookIcon />}
+                  >
+                    Bài học
                   </Button>
-                  <Button variant="outlined" sx={{ color: '#fff', borderColor: '#ffffff88', '&:hover': { borderColor: '#fff', bgcolor: '#ffffff22' } }} onClick={() => navigate(ROUTES.LEARNER.LEVEL_UP)}>
-                    Lên cấp
+                  <Button
+                    variant="outlined"
+                    onClick={() => navigate(ROUTES.LEARNER.PROGRESS)}
+                    sx={{ borderColor: 'rgba(255,255,255,0.3)', color: tokens.white, '&:hover': { borderColor: tokens.white, backgroundColor: 'rgba(255,255,255,0.08)' } }}
+                    startIcon={<TrendingUpIcon />}
+                  >
+                    Lộ trình
                   </Button>
                 </>
               )}
@@ -346,49 +445,86 @@ function LearnerHome() {
         </CardContent>
       </Card>
 
-      {/* ── Stats ── */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
+      {/* ── Stats Grid ── */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+          gap: 2,
+          mb: 3.5,
+        }}
+      >
         {stats.map((s) => (
-          <Grid item xs={6} sm={3} key={s.label}>
-            <Card sx={{ textAlign: 'center', py: 2, borderRadius: 3 }}>
-              <Box sx={{ fontSize: 28, mb: 0.5 }}>{s.icon}</Box>
-              <Typography variant="h5" fontWeight={700}>{s.value}</Typography>
-              <Typography variant="caption" color="text.secondary">{s.label}</Typography>
-            </Card>
-          </Grid>
+          <Card key={s.label} sx={{ borderRadius: 2.5, textAlign: 'center', py: 2.5, '&:hover': { transform: 'none' } }}>
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: 1.5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mx: 'auto',
+                mb: 1,
+                backgroundColor: s.bg,
+                color: s.color,
+                fontSize: 22,
+              }}
+            >
+              {s.icon}
+            </Box>
+            <Typography variant="h5" fontWeight={800} sx={{ fontSize: '1.8rem', color: tokens.charcoal }}>
+              {s.value}
+            </Typography>
+            <Typography variant="caption" sx={{ fontSize: '1rem', color: tokens.stone, fontWeight: 500 }}>
+              {s.label}
+            </Typography>
+          </Card>
         ))}
-      </Grid>
+      </Box>
 
-      <Grid container spacing={3}>
-        {/* ── Learning Path ── */}
-        <Grid item xs={12} md={6}>
-          <LevelPath levels={levels} currentLevel={currentLevel} />
-        </Grid>
-
-        {/* ── Continue Learning ── */}
-        <Grid item xs={12} md={6}>
-          <ContinueLearning materials={materials} loading={loading && !materials.length} currentLevel={currentLevel} progress={progress} />
-        </Grid>
-      </Grid>
+      {/* ── Main Grid: Path + Continue ── */}
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+          gap: 3,
+          mb: 5,
+        }}
+      >
+        <LevelPath levels={levels} currentLevel={currentLevel} />
+        <ContinueLearning
+          materials={materials}
+          loading={loading && !materials.length}
+          currentLevel={currentLevel}
+          progress={progress}
+        />
+      </Box>
 
       {/* ── Supplement Tools ── */}
-      <Box sx={{ mt: 5 }}>
-        <Typography variant="h6" fontWeight={700} gutterBottom>
-          <ExtensionIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-          Công cụ bổ trợ
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+      <Box sx={{ mb: 4 }}>
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 0.5 }}>
+          <ExtensionIcon sx={{ fontSize: 22, color: tokens.coral }} />
+          <Typography variant="h5" fontWeight={700} sx={{ fontSize: '1.6rem', color: tokens.charcoal }}>
+            Công cụ bổ trợ
+          </Typography>
+        </Stack>
+        <Typography variant="body2" sx={{ color: tokens.stone, mb: 2.5, ml: { xs: 0, md: 4 } }}>
           Các tính năng hỗ trợ việc học tiếng Anh của bạn
         </Typography>
-        <Grid container spacing={2}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr', lg: '1fr 1fr 1fr 1fr' },
+            gap: 2,
+          }}
+        >
           {FEATURE_LIST.map((box, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <FeatureBox imgUrl={box.imgUrl} title={box.title} to={box.to} subTitle={box.subTitle} />
-            </Grid>
+            <FeatureBox key={index} imgUrl={box.imgUrl} title={box.title} to={box.to} subTitle={box.subTitle} />
           ))}
-        </Grid>
+        </Box>
       </Box>
-    </Box>
+    </Container>
   );
 }
 

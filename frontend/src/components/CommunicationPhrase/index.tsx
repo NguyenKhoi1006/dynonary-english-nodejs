@@ -14,6 +14,13 @@ function CommunicationPhrase({
   list,
   onLoadData,
   onSelectTopic,
+}: {
+  isFirstLoad: any;
+  loading: any;
+  more: any;
+  list: any;
+  onLoadData: any;
+  onSelectTopic: any;
 }) {
   const classes = useStyle();
 
@@ -38,7 +45,7 @@ function CommunicationPhrase({
                   {list && list.length > 0 ? (
                     <>
                       {/* render list */}
-                      {list.map((item, index) => (
+                      {list.map((item: any, index: number) => (
                         <li className={classes.listItem} key={index}>
                           <CommunicationPhraseItem {...item} />
                         </li>

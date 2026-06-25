@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
-export default makeStyles(() => ({
+export default makeStyles<{}, { color: string }>(() => ({
   root: {
     width: '100%',
     height: '50rem',

@@ -34,7 +34,7 @@ const LEVEL_META: Record<string, { name: string; color: string }> = {
   B1: { name: 'Intermediate', color: '#956400' },
   B2: { name: 'Upper Intermediate', color: '#9F2F2D' },
   C1: { name: 'Advanced', color: '#5E3A8A' },
-  C2: { name: 'Proficient', color: '#2F3437' },
+  C2: { name: 'Proficient', color: '#0A1F2E' },
 };
 
 const TYPE_META: Record<string, { icon: React.ReactNode; label: string }> = {
@@ -72,7 +72,7 @@ function CourseCard({
 }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const meta = LEVEL_META[level] || { name: level, color: '#787774' };
+  const meta = LEVEL_META[level] || { name: level, color: '#6B7280' };
 
   const total = materials.length;
   const completed = materials.filter((m) => completedIds.includes(m.id)).length;
@@ -82,7 +82,7 @@ function CourseCard({
     <Card
       sx={{
         borderRadius: '8px',
-        border: '1px solid #EAEAEA',
+        border: '1px solid #E8E5DF',
         boxShadow: 'none',
         backgroundColor: '#FFFFFF',
         overflow: 'hidden',
@@ -94,7 +94,7 @@ function CourseCard({
           p: 2.5,
           cursor: 'pointer',
           transition: 'background-color 0.2s',
-          '&:hover': { backgroundColor: '#F7F6F3' },
+          '&:hover': { backgroundColor: '#F0EDE7' },
         }}
         onClick={() => setOpen(!open)}
       >
@@ -127,7 +127,7 @@ function CourseCard({
 
           {/* Info */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '1rem', color: '#2F3437' }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '1rem', color: '#0A1F2E' }}>
               Trình độ {level} — {meta.name}
             </Typography>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5 }}>
@@ -138,18 +138,18 @@ function CourseCard({
                   flex: 1,
                   height: 5,
                   borderRadius: 3,
-                  backgroundColor: '#EDEDEA',
+                  backgroundColor: '#E8E5DF',
                   '& .MuiLinearProgress-bar': { backgroundColor: meta.color },
                 }}
               />
-              <Typography variant="caption" sx={{ color: '#787774', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                  <Typography variant="caption" sx={{ color: '#6B7280', fontWeight: 600, whiteSpace: 'nowrap' }}>
                 {completed}/{total} bài
               </Typography>
             </Stack>
           </Box>
 
           {/* Expand */}
-          <IconButton size="small" sx={{ color: '#787774' }}>
+          <IconButton size="small" sx={{ color: '#6B7280' }}>
             {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </Stack>
@@ -157,7 +157,7 @@ function CourseCard({
 
       {/* Lesson list */}
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <Box sx={{ borderTop: '1px solid #EAEAEA' }}>
+        <Box sx={{ borderTop: '1px solid #E8E5DF' }}>
           {materials.map((m, idx) => {
             const isCompleted = completedIds.includes(m.id);
             const typeMeta = getTypeMeta(m.type);
@@ -169,8 +169,8 @@ function CourseCard({
                   py: 1.8,
                   cursor: m.isLocked ? 'default' : 'pointer',
                   transition: 'background-color 0.15s',
-                  '&:hover': { backgroundColor: m.isLocked ? undefined : '#F7F6F3' },
-                  borderBottom: idx < materials.length - 1 ? '1px solid #F0F0F0' : 'none',
+                  '&:hover': { backgroundColor: m.isLocked ? undefined : '#F0EDE7' },
+                  borderBottom: idx < materials.length - 1 ? '1px solid #EDE9E3' : 'none',
                   opacity: m.isLocked ? 0.5 : 1,
                 }}
                 onClick={() => {
@@ -181,7 +181,7 @@ function CourseCard({
                   {/* Status icon */}
                   <Box sx={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     {m.isLocked ? (
-                      <LockIcon sx={{ fontSize: 18, color: '#BBBBBB' }} />
+                      <LockIcon sx={{ fontSize: 18, color: '#9CA3AF' }} />
                     ) : isCompleted ? (
                       <CheckCircleIcon sx={{ fontSize: 20, color: meta.color }} />
                     ) : (
@@ -190,13 +190,13 @@ function CourseCard({
                           width: 20,
                           height: 20,
                           borderRadius: '50%',
-                          border: '2px solid #DDDDDD',
+                          border: '2px solid #D1D5DB',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                         }}
                       >
-                        <Typography variant="caption" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#BBBBBB' }}>
+                        <Typography variant="caption" sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#9CA3AF' }}>
                           {idx + 1}
                         </Typography>
                       </Box>
@@ -211,7 +211,7 @@ function CourseCard({
                         sx={{
                           fontWeight: 600,
                           fontSize: '0.925rem',
-                          color: isCompleted ? '#787774' : '#2F3437',
+                          color: isCompleted ? '#6B7280' : '#0A1F2E',
                           textDecoration: isCompleted ? 'line-through' : 'none',
                         }}
                         noWrap
@@ -223,14 +223,14 @@ function CourseCard({
                       )}
                     </Stack>
                     <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mt: 0.3 }}>
-                      <Stack direction="row" spacing={0.3} alignItems="center" sx={{ color: '#787774' }}>
+                      <Stack direction="row" spacing={0.3} alignItems="center" sx={{ color: '#6B7280' }}>
                         {typeMeta.icon}
-                        <Typography variant="caption" sx={{ fontSize: '0.85rem', color: '#787774' }}>
+                        <Typography variant="caption" sx={{ fontSize: '0.85rem', color: '#6B7280' }}>
                           {typeMeta.label}
                         </Typography>
                       </Stack>
                       {m.estimatedMinutes && (
-                        <Stack direction="row" spacing={0.3} alignItems="center" sx={{ color: '#787774' }}>
+                        <Stack direction="row" spacing={0.3} alignItems="center" sx={{ color: '#6B7280' }}>
                           <AccessTimeIcon sx={{ fontSize: 13 }} />
                           <Typography variant="caption" sx={{ fontSize: '0.85rem' }}>
                             {m.estimatedMinutes} phút
@@ -242,7 +242,7 @@ function CourseCard({
 
                   {/* Action */}
                   {!m.isLocked && !isCompleted && (
-                    <IconButton size="small" sx={{ color: '#787774' }}>
+          <IconButton size="small" sx={{ color: '#6B7280' }}>
                       <PlayArrowIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                   )}
@@ -324,29 +324,29 @@ export default function MaterialsPage() {
     <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: 800, mx: 'auto' }}>
       {/* Header */}
       <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 0.5 }}>
-        <SchoolIcon sx={{ fontSize: 28, color: '#2F3437' }} />
+        <SchoolIcon sx={{ fontSize: 28, color: '#0A1F2E' }} />
         <Typography
           variant="h5"
           sx={{
             fontFamily: "'Playfair Display', 'Instrument Serif', serif",
             fontWeight: 600,
             fontSize: '1.6rem',
-            color: '#2F3437',
+            color: '#0A1F2E',
             letterSpacing: '-0.01em',
           }}
         >
           Khoá học
         </Typography>
       </Stack>
-      <Typography variant="body2" sx={{ color: '#787774', mb: 3, fontSize: '0.925rem' }}>
+      <Typography variant="body2" sx={{ color: '#6B7280', mb: 3, fontSize: '0.925rem' }}>
         Chọn trình độ và bắt đầu học theo lộ trình từ A1 đến C2.
       </Typography>
 
       {/* Course list */}
       {grouped.length === 0 ? (
         <Box sx={{ textAlign: 'center', py: 6 }}>
-          <AutoStoriesIcon sx={{ fontSize: 48, color: '#DDDDDD', mb: 2 }} />
-          <Typography variant="body1" sx={{ color: '#787774', mb: 2 }}>
+          <AutoStoriesIcon sx={{ fontSize: 48, color: '#D1D5DB', mb: 2 }} />
+          <Typography variant="body1" sx={{ color: '#6B7280', mb: 2 }}>
             Chưa có tài liệu học nào. Vui lòng quay lại sau.
           </Typography>
           <Button variant="outlined" onClick={() => navigate('/')}>

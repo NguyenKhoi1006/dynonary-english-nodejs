@@ -21,7 +21,7 @@ import InformationTooltip from './InformationTooltip';
 import PhoneticInput from './PhoneticInput';
 import useStyle from './style';
 
-let delayTimer = null;
+let delayTimer: any = null;
 
 const schema = yup.object().shape({
   word: yup
@@ -75,10 +75,10 @@ const schema = yup.object().shape({
 });
 
 // Prevent unmount component topic select
-const ButtonWrapper = (props) => <Grid {...props} item xs={12} md={6} lg={4} />;
-const TagsWrapper = (props) => <Grid {...props} item xs={12} />;
+const ButtonWrapper = (props: any) => <Grid {...props} item xs={12} md={6} lg={4} />;
+const TagsWrapper = (props: any) => <Grid {...props} item xs={12} />;
 
-function WordContribution({ onSubmitForm, submitting }) {
+function WordContribution({ onSubmitForm, submitting }: { onSubmitForm: any; submitting: any }) {
   const classes = useStyle();
   const [resetFlag, setResetFlag] = useState(0);
   const dispatch = useDispatch();
@@ -95,7 +95,7 @@ function WordContribution({ onSubmitForm, submitting }) {
   const topics = useRef([]);
   const picture = useRef(null);
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     onSubmitForm({ ...data, topics: topics.current, picture: picture.current });
   };
 
@@ -118,7 +118,7 @@ function WordContribution({ onSubmitForm, submitting }) {
     setResetFlag(Math.random() + 1);
   };
 
-  const handleCheckWordExistence = (eWord, eType) => {
+  const handleCheckWordExistence = (eWord: any, eType: any) => {
     delayTimer = debounce(
       delayTimer,
       async () => {
@@ -126,7 +126,7 @@ function WordContribution({ onSubmitForm, submitting }) {
           const word = eWord ? eWord.target?.value : getValues('word'),
             type = eType ? eType.target?.value : getValues('type');
 
-          const apiRes = await wordApi.getCheckWordExistence(word, type);
+          const apiRes = await wordApi.getCheckWordExistence(word);
           if (apiRes.status === 200) {
             const { isExist = false } = apiRes.data;
             if (isExist) {
@@ -161,7 +161,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               inputProps={{
                 autoFocus: true,
                 maxLength: MAX.WORD_LEN,
-                name: 'word',
                 ...register('word'),
               }}
               onChange={(e) => handleCheckWordExistence(e, null)}
@@ -179,7 +178,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               error={Boolean(errors.mean)}
               inputProps={{
                 maxLength: MAX.MEAN_WORD_LEN,
-                name: 'mean',
                 ...register('mean'),
               }}
             />
@@ -195,7 +193,6 @@ function WordContribution({ onSubmitForm, submitting }) {
             resetFlag={resetFlag}
             inputProps={{
               maxLength: MAX.PHONETIC_LEN,
-              name: 'phonetic',
             }}
             register={register('phonetic')}
           />
@@ -208,10 +205,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               options={WORD_TYPES}
               error={Boolean(errors.type)}
               resetFlag={resetFlag}
-              inputProps={{
-                name: 'type',
-                ...register('type'),
-              }}
               onChange={(e) => handleCheckWordExistence(null, e)}
             />
             {errors.type && (
@@ -227,7 +220,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               options={WORD_LEVELS}
               error={Boolean(errors.level)}
               resetFlag={resetFlag}
-              inputProps={{ name: 'level', ...register('level') }}
             />
             {errors.level && (
               <p className="text-error">{errors.level?.message}</p>
@@ -242,10 +234,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               options={WORD_SPECIALTY}
               error={Boolean(errors.specialty)}
               resetFlag={resetFlag}
-              inputProps={{
-                name: 'specialty',
-                ...register('specialty'),
-              }}
             />
             {errors.specialty && (
               <p className="text-error">{errors.specialty?.message}</p>
@@ -263,7 +251,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               }
               error={Boolean(errors.examples)}
               inputProps={{
-                name: 'examples',
                 ...register('examples'),
               }}
             />
@@ -281,7 +268,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               multiline
               error={Boolean(errors.synonyms)}
               inputProps={{
-                name: 'synonyms',
                 ...register('synonyms'),
               }}
             />
@@ -298,7 +284,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               multiline
               error={Boolean(errors.antonyms)}
               inputProps={{
-                name: 'antonyms',
                 ...register('antonyms'),
               }}
             />
@@ -318,7 +303,6 @@ function WordContribution({ onSubmitForm, submitting }) {
               }
               error={Boolean(errors.note)}
               inputProps={{
-                name: 'note',
                 ...register('note'),
               }}
             />

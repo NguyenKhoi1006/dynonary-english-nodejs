@@ -1,7 +1,7 @@
 import { makeStyles } from '@mui/styles';
 import { cloudinaryImgOptimize } from 'helper';
 
-export default makeStyles((theme) => ({
+export default makeStyles<{}, { picture: string }>((theme: any) => ({
   root: {
     '&::before': {
       content: '""',

@@ -5,7 +5,7 @@ import React from 'react';
 import GalleryItem from '../GalleryItem';
 import useStyle from './style';
 
-function GalleryList({ list, onPrev, onNext, total, current, showMean }) {
+function GalleryList({ list, onPrev, onNext, total, current, showMean }: { list: any; onPrev: any; onNext: any; total: any; current: any; showMean: any }) {
   const classes = useStyle();
 
   return (
@@ -13,7 +13,7 @@ function GalleryList({ list, onPrev, onNext, total, current, showMean }) {
       {list && list.length > 0 ? (
         <>
           {/* gallery */}
-          {list.slice(0, 7).map((item, index) => (
+          {list.slice(0, 7).map((item: any, index: number) => (
             <GalleryItem key={index} {...item} showMean={showMean} />
           ))}
 
@@ -35,7 +35,7 @@ function GalleryList({ list, onPrev, onNext, total, current, showMean }) {
             <div key={index}>
               <Skeleton
                 className="w-100 h-100"
-                variant="rect"
+                variant="rectangular"
                 animation="wave"
               />
             </div>

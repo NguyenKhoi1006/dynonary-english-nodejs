@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import useStyle from './style';
 
-function SliceExample({ word, example }) {
+function SliceExample({ word, example }: { word: any; example: any }) {
   const index = example.toLowerCase().indexOf(word.toLowerCase());
 
   return (
@@ -21,7 +21,7 @@ function SliceExample({ word, example }) {
   );
 }
 
-function SlideItem({ mean, word, type, phonetic, example, picture, showMean }) {
+function SlideItem({ mean, word, type, phonetic, example, picture, showMean }: { mean: any; word: any; type: any; phonetic: any; example: any; picture: any; showMean: any }) {
   const classes = useStyle({ picture });
 
   useEffect(() => {

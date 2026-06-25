@@ -15,6 +15,15 @@ function SlideShow({
   currentSlide,
   onSaveCurrentSlide,
   totalCurrentSlide,
+}: {
+  list: any;
+  total: any;
+  onGetNewList: any;
+  onGetOldList: any;
+  showMean: any;
+  currentSlide: any;
+  onSaveCurrentSlide: any;
+  totalCurrentSlide: any;
 }) {
   const classes = useStyle();
   const [current, setCurrent] = useState(currentSlide);
@@ -66,7 +75,7 @@ function SlideShow({
         </>
       ) : (
         <Skeleton
-          variant="rect"
+          variant="rectangular"
           className={`${classes.skeleton} w-100`}
           animation="wave"
           style={{ height: '576px' }}

@@ -31,6 +31,9 @@ export default defineConfig({
     ],
   },
   server: {
+    host: true,
+    strictPort: false,
+    allowedHosts: true,
     port: 8888,
     proxy: {
       '/apis': {

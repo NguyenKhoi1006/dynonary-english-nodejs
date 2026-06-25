@@ -13,7 +13,7 @@ class UserProfileResponse(BaseModel):
     favoriteList: List[str] = []
     createdDate: Optional[str] = None
     provider: str = "password"
-    role: str = "learner"
+    role: str = "student"
     membership: str = "free"
     level: Optional[str] = None
     status: str = "active"
@@ -23,6 +23,7 @@ class UserProfileResponse(BaseModel):
 class UpdateProfileRequest(BaseModel):
     name: Optional[str] = Field(None, max_length=50)
     username: Optional[str] = Field(None, max_length=50)
+    role: Optional[str] = Field(None, pattern=r"^(student|tutor|admin)?$")
 
 
 class ToggleFavoriteRequest(BaseModel):

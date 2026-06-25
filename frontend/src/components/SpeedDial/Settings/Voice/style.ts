@@ -17,14 +17,11 @@ export default makeStyles((theme) => ({
 
     '& .MuiSelect-root': {
       color: 'var(--label-color)',
+      padding: '1.4rem',
     },
 
     '& .MuiInputLabel-root': {
       color: 'var(--secondary-color)',
-    },
-
-    '& .MuiSelect-root': {
-      padding: '1.4rem',
     },
 
     '& .MuiOutlinedInput-notchedOutline': {

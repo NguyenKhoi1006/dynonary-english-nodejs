@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import useStyle from './style';
 
-function GalleryItem({ word, mean, phonetic, type, picture, showMean }) {
+function GalleryItem({ word, mean, phonetic, type, picture, showMean }: { word: any; mean: any; phonetic: any; type: any; picture: any; showMean: any }) {
   const classes = useStyle({ picture });
   const { voice, speed, volume } = useSpeaker();
 

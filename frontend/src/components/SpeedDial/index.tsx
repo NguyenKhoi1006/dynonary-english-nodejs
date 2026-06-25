@@ -39,9 +39,9 @@ const actions = [
 function SpeedDials() {
   const classes = useStyle();
   const [open, setOpen] = useState(false);
-  // const history = useHistory\(\);
+  const navigate = useNavigate();
 
-  const handleClose = (to, isBlank = false) => {
+  const handleClose = (to: any, isBlank: boolean = false) => {
     setOpen(false);
     if (to && to !== '') {
       if (isBlank) {
@@ -61,7 +61,7 @@ function SpeedDials() {
       classes={{
         root: classes.root,
         fab: classes.fab,
-        actions: classes.actions,
+        actions: (classes as any).actions,
       }}
       hidden={false}
       ariaLabel="Speed Dial"

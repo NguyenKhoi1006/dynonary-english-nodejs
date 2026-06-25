@@ -4,28 +4,28 @@ import { debounce } from 'helper';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import useStyle from './style';
-let debounceTimer = null;
-const htmlRoot = document.querySelector(':root');
+let debounceTimer: any = null;
+const htmlRoot = document.querySelector(':root') as HTMLElement;
 
-function ColorBox({ color, label, colorKey }) {
+function ColorBox({ color, label, colorKey }: { color: any; label: any; colorKey: any }) {
   const classes = useStyle();
   const [value, setValue] = useState(color);
   const titleTooltip = `${label}: ${value}`;
 
-  const onColorChange = (colorVal) => {
+  const onColorChange = (colorVal: string) => {
     debounceTimer = debounce(debounceTimer, () => {
       // Update UI
       htmlRoot.style.setProperty(colorKey, colorVal);
 
       // update local storage
       const lsPalettes = JSON.parse(
-        localStorage.getItem(THEME_KEYS.PALETTE_KEY),
+        localStorage.getItem(THEME_KEYS.PALETTE_KEY) || '[]',
       );
 
       localStorage.setItem(
         THEME_KEYS.PALETTE_KEY,
         JSON.stringify(
-          lsPalettes.map((item) =>
+            lsPalettes.map((item: any) =>
             item.key === colorKey ? { ...item, color: colorVal } : item,
           ),
         ),
@@ -50,13 +50,13 @@ function ColorBox({ color, label, colorKey }) {
   );
 }
 
-function PaletteColor({ palettes }) {
+function PaletteColor({ palettes }: { palettes: any }) {
   const classes = useStyle();
 
   return (
     <div className={classes.paletteRoot}>
       {palettes &&
-        palettes.map((item, index) => (
+        palettes.map((item: any, index: number) => (
           <ColorBox
             key={index}
             label={item.label}

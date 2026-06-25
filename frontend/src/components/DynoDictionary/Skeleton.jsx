@@ -6,7 +6,7 @@ function DynoDictionarySkeleton({ className }) {
   return (
     <div className={className}>
       {new Array(10).fill(0).map((_, index) => (
-        <Skeleton key={index} animation="wave" variant="rect" />
+        <Skeleton key={index} animation="wave" variant="rectangular" />
       ))}
     </div>
   );

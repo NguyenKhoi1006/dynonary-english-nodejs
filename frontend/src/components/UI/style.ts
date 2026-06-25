@@ -1,4 +1,4 @@
-export const gameBoxStyle = (theme) => ({
+export const gameBoxStyle = (theme: any) => ({
   root: {
     height: '100%',
     display: 'grid',
@@ -135,7 +135,7 @@ export const formStyle = () => ({
     opacity: 0.65,
     fontWeight: 500,
     fontSize: '1.4rem',
-    textAlign: 'right',
+    textAlign: 'right' as const,
 
     '&:hover': {
       opacity: 1,

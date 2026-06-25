@@ -1,1 +1,0 @@
-import{c as s}from"./index-DRYlVOHl.js";const r={getWordPackTotal:async t=>{try{const a=await s.get("/apis/word/pack",{params:{page:1,perPage:1,packInfo:JSON.stringify(t||{})}});return{status:a.status,data:{total:a.data.total||0}}}catch{return{status:200,data:{total:0}}}}};export{r as c};

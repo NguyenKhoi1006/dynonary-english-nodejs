@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import useStyle from './style';
 
-function SelectCustom(props) {
+function SelectCustom(props: any) {
   const {
     label,
     options,
@@ -50,7 +50,7 @@ function SelectCustom(props) {
           }}
           {...selectProps}>
           {options &&
-            options.map((option, index) => (
+            options.map((option: any, index: number) => (
               <MenuItem key={index} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -68,6 +68,7 @@ SelectCustom.propTypes = {
   error: PropTypes.bool,
   resetFlag: PropTypes.number,
   onChange: PropTypes.func,
+  inputProps: PropTypes.object,
 };
 
 SelectCustom.defaultProps = {

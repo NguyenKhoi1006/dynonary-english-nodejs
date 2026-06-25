@@ -3,6 +3,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
+from app.shared.error_handlers import (
+    http_error_handler,
+    validation_error_handler,
+    generic_error_handler,
+)
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.exceptions import RequestValidationError
 
 from app.features.account.router import router as account_router
 from app.features.word.router import router as word_router
@@ -18,18 +25,29 @@ from app.features.topics.router import router as topics_router
 from app.features.irregular_verbs.router import router as irregular_verbs_router
 from app.features.gamification.router import gamification_router
 
+# ── LMS Modules ──────────────────────────────────────────────────
+from app.features.tutors.router import router as tutors_router
+from app.features.courses.router import router as courses_router
+from app.features.scheduling.router import router as scheduling_router
+from app.features.reviews.router import router as reviews_router
+from app.features.messaging.router import router as messaging_router
+
 app = FastAPI(
     title="Dynonary API",
     version="1.0.0",
     description="Dynonary - Learn English with Python backend",
 )
 
+app.add_exception_handler(StarletteHTTPException, http_error_handler)
+app.add_exception_handler(RequestValidationError, validation_error_handler)
+app.add_exception_handler(Exception, generic_error_handler)
+
 # CORS
 origins = [o.strip() for o in settings.cors_origins.split(",")]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -58,3 +76,10 @@ app.include_router(learner_router, prefix=f"{BASE_URL}/learner", tags=["Learner"
 app.include_router(topics_router, prefix=f"{BASE_URL}/topics", tags=["Topics"])
 app.include_router(irregular_verbs_router, prefix=f"{BASE_URL}/irregular-verbs", tags=["Irregular Verbs"])
 app.include_router(gamification_router, prefix=f"{BASE_URL}", tags=["Gamification"])
+
+# LMS routers
+app.include_router(tutors_router, prefix=f"{BASE_URL}", tags=["Tutors"])
+app.include_router(courses_router, prefix=f"{BASE_URL}", tags=["Courses"])
+app.include_router(scheduling_router, prefix=f"{BASE_URL}", tags=["Scheduling"])
+app.include_router(reviews_router, prefix=f"{BASE_URL}", tags=["Reviews"])
+app.include_router(messaging_router, prefix=f"{BASE_URL}", tags=["Messaging"])

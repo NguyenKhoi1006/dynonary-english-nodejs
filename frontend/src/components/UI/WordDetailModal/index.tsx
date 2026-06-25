@@ -10,11 +10,11 @@ import { useTopics } from 'services/useContentData';
 import Tag from '../Tag';
 import useStyle from './style';
 
-function sliceTopics(topicKeys, allTopics) {
-  return topicKeys.map((key) => allTopics.find((i) => i.key === key)).filter(Boolean);
+function sliceTopics(topicKeys: any, allTopics: any) {
+  return topicKeys.map((key: any) => allTopics.find((i: any) => i.key === key)).filter(Boolean);
 }
 
-function WordDetailModal(props) {
+function WordDetailModal(props: any) {
   const {
     picture,
     word,
@@ -59,7 +59,7 @@ function WordDetailModal(props) {
       {loading ? (
         <Skeleton
           style={{ width: '100%', height: '35vh' }}
-          variant="rect"
+          variant="rectangular"
           animation="wave"
         />
       ) : (
@@ -95,7 +95,7 @@ function WordDetailModal(props) {
           {examples && examples.length > 0 && (
             <div>
               <b className={classes.label}>Câu ví dụ:</b>
-              {examples.map((ex, index) => (
+              {examples.map((ex: any, index: number) => (
                 <p key={index}>
                   {index + 1}.&nbsp;{ex}
                 </p>
@@ -118,7 +118,7 @@ function WordDetailModal(props) {
 
               <div className={`${classes.topics} d-flex flex-wrap`}>
                 {sliceTopics(wordTopicKeys, allTopics).length > 0 ? (
-                  sliceTopics(wordTopicKeys, allTopics).map((topic, index) => (
+                  sliceTopics(wordTopicKeys, allTopics).map((topic: any, index: number) => (
                     <Tag key={index} title={topic.title} iconSrc={topic.icon} />
                   ))
                 ) : (
@@ -139,7 +139,7 @@ function WordDetailModal(props) {
             <>
               <b className={classes.label}>Ghi chú:</b>
               <p>
-                {note.split('\n').map((i, index) => (
+                {note.split('\n').map((i: any, index: number) => (
                   <span key={index}>
                     {i} <br />
                   </span>

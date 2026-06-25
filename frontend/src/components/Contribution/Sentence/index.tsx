@@ -37,9 +37,9 @@ const schema = yup.object().shape({
       `Ghi chú tối đa ${MAX.SENTENCE_NOTE_LEN} ký tự`,
     ),
 });
-const ButtonWrapper = (props) => <Grid {...props} item xs={12} />;
+const ButtonWrapper = (props: any) => <Grid {...props} item xs={12} />;
 
-function SentenceContribution({ submitting, onSubmitForm }) {
+function SentenceContribution({ submitting, onSubmitForm }: { submitting: any; onSubmitForm: any }) {
   const classes = useStyle();
   const { topics: sentenceTopics, loading } = useTopics('sentence');
   const topics = useRef([]);
@@ -59,7 +59,7 @@ function SentenceContribution({ submitting, onSubmitForm }) {
     reset({ sentence: '', mean: '', note: '' });
   };
 
-  const handleSubmitForm = (formData) => {
+  const handleSubmitForm = (formData: any) => {
     onSubmitForm({ ...formData, topics: topics.current });
   };
 
@@ -72,21 +72,19 @@ function SentenceContribution({ submitting, onSubmitForm }) {
         <Grid className={classes.grid} container spacing={3}>
           {/* new sentence */}
           <Grid item xs={12}>
-            <InputCustom
-              className="w-100"
-              label="Một câu bằng tiếng Anh (*)"
-              multiline
-              error={Boolean(errors.sentence)}
-              inputProps={{
-                autoFocus: true,
-                className: classes.sentenceInput,
-                maxLength: MAX.SENTENCE_LEN,
-                name: 'sentence',
-
-                ...register('sentence'),
-              }}
-              // onChange={(e) => handleCheckWordExistence(e, null)}
-            />
+        <InputCustom
+          className="w-100"
+          label="Một câu bằng tiếng Anh (*)"
+          multiline
+          error={Boolean(errors.sentence)}
+          inputProps={{
+            autoFocus: true,
+            className: classes.sentenceInput,
+            maxLength: MAX.SENTENCE_LEN,
+            ...register('sentence'),
+          }}
+          // onChange={(e) => handleCheckWordExistence(e, null)}
+        />
             {errors.sentence && (
               <p className="text-error">{errors.sentence?.message}</p>
             )}
@@ -94,17 +92,16 @@ function SentenceContribution({ submitting, onSubmitForm }) {
 
           {/* mean sentence */}
           <Grid item xs={12}>
-            <InputCustom
-              className="w-100"
-              label="Nghĩa của câu bằng tiếng Viết (*)"
-              error={Boolean(errors.mean)}
-              multiline
-              inputProps={{
-                maxLength: MAX.SENTENCE_MEAN_LEN,
-                name: 'mean',
-                className: classes.sentenceInput,
-                ...register('mean'),
-              }}
+          <InputCustom
+            className="w-100"
+            label="Nghĩa của câu bằng tiếng Viết (*)"
+            error={Boolean(errors.mean)}
+            multiline
+            inputProps={{
+              maxLength: MAX.SENTENCE_MEAN_LEN,
+              className: classes.sentenceInput,
+              ...register('mean'),
+            }}
               endAdornment={
                 <InformationTooltip title="Nhập những nghĩa của câu vừa nhập. Thêm nhiều nghĩa bằng cách xuống dòng." />
               }
@@ -117,17 +114,16 @@ function SentenceContribution({ submitting, onSubmitForm }) {
 
           {/* sentence note */}
           <Grid item xs={12}>
-            <InputCustom
-              className="w-100"
-              label="Thêm ghi chú cho câu trên (*)"
-              error={Boolean(errors.note)}
-              multiline
-              inputProps={{
-                className: classes.sentenceInput,
-                maxLength: MAX.SENTENCE_NOTE_LEN,
-                name: 'note',
-                ...register('note'),
-              }}
+          <InputCustom
+            className="w-100"
+            label="Thêm ghi chú cho câu trên (*)"
+            error={Boolean(errors.note)}
+            multiline
+            inputProps={{
+              className: classes.sentenceInput,
+              maxLength: MAX.SENTENCE_NOTE_LEN,
+              ...register('note'),
+            }}
               endAdornment={
                 <InformationTooltip title="Thêm các ghi chú, có thể là cấu trúc câu, cách dùng, lưu ý, ..." />
               }

@@ -38,9 +38,17 @@ function UserAccount({
   progressData,
   membership,
   membershipExpiry,
+}: {
+  email: any;
+  createdDate: any;
+  onUpload: any;
+  onUpdateProfile: any;
+  progressData: any;
+  membership: any;
+  membershipExpiry: any;
 }) {
   const navigate = useNavigate();
-  const userInfo = useSelector((s) => s.userInfo);
+  const userInfo = useSelector((s: any) => s.userInfo);
   const { username, name, avt, coin, xp, level } = userInfo;
   const avtSrc = avt ? cloudinaryImgOptimize(avt, 150, 150) : DEFAULTS.IMAGE_SRC;
   const classes = useStyle();
@@ -50,7 +58,7 @@ function UserAccount({
   const inputRef = useRef({ name, username });
   const [errors, setErrors] = useState({ name: false, username: false });
 
-  const handleInputChange = (v, type = 0) => {
+  const handleInputChange = (v: any, type: number = 0) => {
     if (type) {
       if (errors.name && v) setErrors((p) => ({ ...p, name: false }));
       inputRef.current.name = v;
@@ -89,8 +97,8 @@ function UserAccount({
     const items = [];
     if (totalStudyDays > 0) items.push({ icon: <WhatshotIcon />, title: `${totalStudyDays} ngày học`, meta: 'Tổng số ngày đã học' });
     if (totalXp > 0) items.push({ icon: <EmojiEventsIcon />, title: `${totalXp} XP`, meta: 'Tổng điểm kinh nghiệm' });
-    Object.entries(levels).forEach(([lvl, data]) => {
-      if (data.status === 'completed') items.push({ icon: <CheckCircleIcon />, title: `Hoàn thành cấp độ ${lvl}`, meta: LEVEL_NAMES[lvl] || lvl });
+    Object.entries(levels).forEach(([lvl, data]: [string, any]) => {
+      if (data.status === 'completed') items.push({ icon: <CheckCircleIcon />, title: `Hoàn thành cấp độ ${lvl}`, meta: (LEVEL_NAMES as any)[lvl] || lvl });
     });
     return items;
   };
@@ -109,9 +117,9 @@ function UserAccount({
     { icon: <MonetizationOnIcon sx={{ color: '#f57c00' }} />, value: coin, label: 'Coin' },
   ];
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<any>(null);
 
-  const handleFilePick = (e) => {
+  const handleFilePick = (e: any) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -145,7 +153,7 @@ function UserAccount({
             <div className={classes.cameraIconWrap} onClick={() => fileInputRef.current?.click()}>
               <CameraIcon className={classes.cameraIcon} />
               <input
-                ref={fileInputRef}
+                ref={fileInputRef as any}
                 type="file"
                 accept="image/*"
                 style={{ display: 'none' }}
@@ -291,7 +299,9 @@ function UserAccount({
             const isCompleted = data.status === 'completed';
             const isCurrent = lvl === level;
             const progress = data.progress || 0;
-            const color = LEVEL_COLORS[lvl] || '#1976d2';
+            const color = (LEVEL_COLORS as any)[lvl] || '#1976d2';
+            const colorFill = (LEVEL_COLORS as any)[lvl] || '#1976d2';
+            const colorBorder = (LEVEL_COLORS as any)[lvl] || '#1976d2';
 
             return (
               <div key={lvl} className={classes.levelRow}
@@ -308,7 +318,7 @@ function UserAccount({
                 </div>
                 <div className={classes.levelInfo}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span className={classes.levelName}>{LEVEL_NAMES[lvl]}</span>
+                    <span className={classes.levelName}>{(LEVEL_NAMES as any)[lvl]}</span>
                     <span style={{ fontSize: '1.2rem', fontWeight: 600, color }}>
                       {isCompleted ? '100%' : `${progress}%`}
                     </span>

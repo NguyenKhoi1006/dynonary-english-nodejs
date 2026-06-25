@@ -1,14 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@mui/material/Button';
-import LockIcon from '@mui/icons-material/Lock';
-import LoopIcon from '@mui/icons-material/Loop';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import CircularProgress from '@mui/material/CircularProgress';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import makeStyles from '@mui/styles/makeStyles';
-import InputCustom from 'components/UI/InputCustom';
-import { formStyle } from 'components/UI/style';
 import { MAX, MIN } from 'constant';
-import PropTypes from 'prop-types';
+import { tokens } from 'shared/configs/theme';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -41,11 +43,10 @@ const schema = yup.object().shape({
     .string()
     .trim()
     .required('Xác nhận lại mật khẩu')
-    .oneOf([yup.ref('password'), null], 'Mật khẩu không khớp'),
+    .oneOf([yup.ref('password')], 'Mật khẩu không khớp'),
 });
 
-function ForgotPassword({ onSubmit, loading, mailSending, onSendVerifyCode }) {
-  const classes = makeStyles(formStyle())();
+function ForgotPassword({ onSubmit, loading, mailSending, onSendVerifyCode }: { onSubmit: any; loading: any; mailSending: any; onSendVerifyCode: any }) {
   const [visiblePw, setVisiblePw] = useState(false);
   const {
     register,
@@ -59,159 +60,138 @@ function ForgotPassword({ onSubmit, loading, mailSending, onSendVerifyCode }) {
 
   const handleSendCode = async () => {
     const email = getValues('email');
-
-    const regex =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
+    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (!regex.test(email.toLowerCase())) {
-      dispatch(
-        setMessage({
-          type: 'error',
-          message: 'Email không hợp lệ',
-        }),
-      );
+      dispatch(setMessage({ type: 'error', message: 'Email không hợp lệ' }));
       return;
     }
-
     onSendVerifyCode(email);
   };
 
   return (
-    <form
-      className={`${classes.root} flex-col`}
+    <Box
+      component="form"
       onSubmit={handleSubmit(onSubmit)}
-      autoComplete="off">
-      <div className="flex-col">
-        <h1 className={`${classes.title} t-center`}>Lấy lại mật khẩu</h1>
-        <div className="t-center mt-5">
-          <LockIcon className={classes.labelIcon} />
-        </div>
-      </div>
-
-      <div className="flex-col">
-        <InputCustom
-          label="Email"
-          size="small"
-          placeholder="Nhập email"
-          error={Boolean(errors.email)}
-          inputProps={{
-            name: 'email',
-            maxLength: MAX.EMAIL_LEN,
-            autoFocus: true,
-            ...register('email'),
+      autoComplete="off"
+      sx={{ '& > *:not(:last-child)': { mb: 2.5 } }}
+    >
+      {/* Header */}
+      <Box sx={{ textAlign: 'center', mb: 1 }}>
+        <Box
+          sx={{
+            width: 44,
+            height: 44,
+            borderRadius: 1.5,
+            backgroundColor: `${tokens.coral}12`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mx: 'auto',
+            mb: 1.5,
           }}
-        />
-        {errors.email && <p className="text-error">{errors.email?.message}</p>}
-      </div>
+        >
+          <LockResetIcon sx={{ fontSize: 22, color: tokens.coral }} />
+        </Box>
+        <Typography variant="h5" sx={{ fontWeight: 700, fontSize: '1.8rem', color: tokens.charcoal }}>
+          Lấy lại mật khẩu
+        </Typography>
+        <Typography sx={{ fontSize: '1.2rem', color: tokens.stone, mt: 0.3 }}>
+          Nhập email để nhận mã xác thực
+        </Typography>
+      </Box>
 
-      <div className="flex-col">
-        <div className="d-flex">
-          <InputCustom
-            className="w-50"
-            label="Mã xác nhận"
-            size="small"
-            placeholder="X X X X X X"
-            error={Boolean(errors.verifyCode)}
-            inputProps={{
-              name: 'verifyCode',
-              maxLength: MAX.VERIFY_CODE,
-              ...register('verifyCode'),
-            }}
-          />
-          <Button
-            className="_btn _btn-stand w-50"
-            disabled={mailSending}
-            endIcon={mailSending && <LoopIcon className="ani-spin" />}
-            onClick={handleSendCode}>
-            Gửi mã
-          </Button>
-        </div>
-        {errors.verifyCode && (
-          <p className="text-error">{errors.verifyCode?.message}</p>
-        )}
-      </div>
+      {/* Email */}
+      <TextField
+        fullWidth
+        label="Email"
+        size="small"
+        placeholder="Nhập email"
+        error={Boolean(errors.email)}
+        helperText={errors.email?.message}
+        inputProps={{ maxLength: MAX.EMAIL_LEN, autoFocus: true, ...register('email') }}
+      />
 
-      <div className="flex-col">
-        <InputCustom
-          label="Mật khẩu"
+      {/* Verify Code + Send Button */}
+      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start' }}>
+        <TextField
+          label="Mã xác nhận"
           size="small"
-          placeholder="Nhập mật khẩu"
-          error={Boolean(errors.password)}
-          inputProps={{
-            name: 'password',
-            maxLength: MAX.PASSWORD_LEN,
-            type: visiblePw ? 'text' : 'password',
-            ...register('password'),
-          }}
-          endAdornment={
-            visiblePw ? (
-              <VisibilityIcon
-                className={`${classes.icon} ${classes.visiblePw}`}
-                onClick={() => setVisiblePw(false)}
-              />
-            ) : (
-              <VisibilityOffIcon
-                className={classes.icon}
-                onClick={() => setVisiblePw(true)}
-              />
-            )
-          }
+          placeholder="X X X X X X"
+          error={Boolean(errors.verifyCode)}
+          helperText={errors.verifyCode?.message}
+          inputProps={{ maxLength: MAX.VERIFY_CODE, ...register('verifyCode') }}
+          sx={{ flex: 1 }}
         />
-        {errors.password && (
-          <p className="text-error">{errors.password?.message}</p>
-        )}
-      </div>
+        <Button
+          variant="outlined"
+          disabled={mailSending}
+          onClick={handleSendCode}
+          sx={{ mt: 0.3, height: 40, whiteSpace: 'nowrap', flexShrink: 0 }}
+        >
+          {mailSending ? <CircularProgress size={18} /> : 'Gửi mã'}
+        </Button>
+      </Box>
 
-      <div className="flex-col">
-        <InputCustom
-          label="Xác nhận mật khẩu"
-          size="small"
-          placeholder="Nhập lại mật khẩu"
-          error={Boolean(errors.confirmPw)}
-          inputProps={{
-            name: 'confirmPw',
-            maxLength: MAX.PASSWORD_LEN,
-            type: visiblePw ? 'text' : 'password',
-            ...register('confirmPw'),
-          }}
-          endAdornment={
-            visiblePw ? (
-              <VisibilityIcon
-                className={`${classes.icon} ${classes.visiblePw}`}
-                onClick={() => setVisiblePw(false)}
-              />
-            ) : (
-              <VisibilityOffIcon
-                className={classes.icon}
-                onClick={() => setVisiblePw(true)}
-              />
-            )
-          }
-        />
-        {errors.confirmPw && (
-          <p className="text-error">{errors.confirmPw?.message}</p>
-        )}
-      </div>
+      {/* New Password */}
+      <TextField
+        fullWidth
+        label="Mật khẩu mới"
+        size="small"
+        placeholder="Nhập mật khẩu"
+        type={visiblePw ? 'text' : 'password'}
+        error={Boolean(errors.password)}
+        helperText={errors.password?.message}
+        inputProps={{ maxLength: MAX.PASSWORD_LEN, ...register('password') }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setVisiblePw(!visiblePw)} edge="end" size="small" sx={{ color: tokens.iron }}>
+                {visiblePw ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
 
+      {/* Confirm Password */}
+      <TextField
+        fullWidth
+        label="Xác nhận mật khẩu"
+        size="small"
+        placeholder="Nhập lại mật khẩu"
+        type={visiblePw ? 'text' : 'password'}
+        error={Boolean(errors.confirmPw)}
+        helperText={errors.confirmPw?.message}
+        inputProps={{ maxLength: MAX.PASSWORD_LEN, ...register('confirmPw') }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={() => setVisiblePw(!visiblePw)} edge="end" size="small" sx={{ color: tokens.iron }}>
+                {visiblePw ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      {/* Submit */}
       <Button
-        className="_btn _btn-primary"
         type="submit"
         variant="contained"
         color="primary"
         disabled={loading}
-        endIcon={loading && <LoopIcon className="ani-spin" />}
-        size="large">
-        Đổi mật khẩu
+        fullWidth
+        size="large"
+        sx={{ py: 1.4 }}
+      >
+        {loading ? (
+          <CircularProgress size={22} sx={{ color: tokens.white }} />
+        ) : (
+          'Đổi mật khẩu'
+        )}
       </Button>
-    </form>
+    </Box>
   );
 }
-
-ForgotPassword.propTypes = {
-  loading: PropTypes.bool,
-  mailSending: PropTypes.bool,
-  onSendVerifyCode: PropTypes.func,
-  onSubmit: PropTypes.func,
-};
 
 export default ForgotPassword;

@@ -36,7 +36,7 @@ function InlineText({ text }: { text: string }) {
             key={i}
             sx={{
               fontWeight: 700,
-              color: '#2F3437',
+              color: '#0A1F2E',
               backgroundColor: '#F0EFEB',
               px: 0.6,
               py: 0.15,
@@ -128,7 +128,7 @@ function FormSection({ lines }: { lines: string[] }) {
           p: 2.5,
           mb: 2,
           textAlign: 'center',
-          border: '1px solid #EAEAEA',
+          border: '1px solid #E8E5DF',
         }}
       >
         <Typography
@@ -136,7 +136,7 @@ function FormSection({ lines }: { lines: string[] }) {
           sx={{
             fontFamily: "'Playfair Display', serif",
             fontSize: '1.6rem',
-            color: '#2F3437',
+            color: '#0A1F2E',
             fontWeight: 600,
           }}
         >
@@ -155,8 +155,8 @@ function FormSection({ lines }: { lines: string[] }) {
               gap: 1.5,
               p: 1.5,
               borderRadius: '6px',
-              backgroundColor: '#FAFAF9',
-              border: '1px solid #EAEAEA',
+              backgroundColor: '#F8F6F2',
+              border: '1px solid #E8E5DF',
             }}
           >
             <Box
@@ -164,12 +164,12 @@ function FormSection({ lines }: { lines: string[] }) {
                 width: 6,
                 height: 6,
                 borderRadius: '50%',
-                backgroundColor: '#2F3437',
+                backgroundColor: '#0A1F2E',
                 mt: 0.6,
                 flexShrink: 0,
               }}
             />
-            <Typography variant="body2" sx={{ color: '#2F3437', fontSize: '1.1rem', lineHeight: 1.7 }}>
+            <Typography variant="body2" sx={{ color: '#0A1F2E', fontSize: '1.1rem', lineHeight: 1.7 }}>
               {parseInline(ex.replace(/^- /, ''))}
             </Typography>
           </Box>
@@ -209,10 +209,10 @@ function UsesSection({ lines }: { lines: string[] }) {
           key={i}
           sx={{
             borderRadius: '8px',
-            border: '1px solid #EAEAEA',
+            border: '1px solid #E8E5DF',
             boxShadow: 'none',
             backgroundColor: '#FFFFFF',
-            '&:hover': { borderColor: '#DDDDDD' },
+            '&:hover': { borderColor: '#D1D5DB' },
           }}
         >
           <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
@@ -222,7 +222,7 @@ function UsesSection({ lines }: { lines: string[] }) {
                 size="small"
                 sx={{
                   fontWeight: 700,
-                  backgroundColor: '#2F3437',
+                  backgroundColor: '#0A1F2E',
                   color: '#FFFFFF',
                   minWidth: 26,
                   height: 26,
@@ -231,10 +231,10 @@ function UsesSection({ lines }: { lines: string[] }) {
                 }}
               />
               <Box sx={{ minWidth: 0, flex: 1 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#2F3437', mb: 0.5, fontSize: '1.15rem' }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#0A1F2E', mb: 0.5, fontSize: '1.15rem' }}>
                   {item.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#787774', fontSize: '1rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+                <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '1rem', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
                   {item.desc.split('\n').map((d, j) => (
                     <React.Fragment key={j}>
                       {j > 0 && <br />}
@@ -269,12 +269,12 @@ function AdverbsSection({ lines }: { lines: string[] }) {
           key={adv.word}
           sx={{
             borderRadius: '8px',
-            border: '1px solid #EAEAEA',
+            border: '1px solid #E8E5DF',
             boxShadow: 'none',
             backgroundColor: '#FFFFFF',
             cursor: 'pointer',
             transition: 'all 0.15s',
-            '&:hover': { borderColor: '#2F3437', backgroundColor: '#FAFAF9' },
+            '&:hover': { borderColor: '#0A1F2E', backgroundColor: '#F8F6F2' },
           }}
         >
           <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
@@ -284,13 +284,13 @@ function AdverbsSection({ lines }: { lines: string[] }) {
                 size="small"
                 sx={{
                   fontWeight: 700,
-                  backgroundColor: '#2F3437',
+                  backgroundColor: '#0A1F2E',
                   color: '#FFFFFF',
                   fontSize: '0.95rem',
                   minWidth: 64,
                 }}
               />
-              <Typography variant="body2" sx={{ color: '#787774', fontSize: '1.05rem', lineHeight: 1.7, fontStyle: 'italic' }}>
+              <Typography variant="body2" sx={{ color: '#6B7280', fontSize: '1.05rem', lineHeight: 1.7, fontStyle: 'italic' }}>
                 {adv.example}
               </Typography>
             </Stack>
@@ -315,15 +315,15 @@ function PracticeSection({ lines }: { lines: string[] }) {
           key={idx}
           sx={{
             borderRadius: '8px',
-            border: '1px solid #EAEAEA',
+            border: '1px solid #E8E5DF',
             boxShadow: 'none',
             backgroundColor: '#FFFFFF',
           }}
         >
           <CardContent sx={{ p: 2.5, '&:last-child': { pb: 2.5 } }}>
             <Stack direction="row" spacing={1.5} alignItems="flex-start" sx={{ mb: 1.5 }}>
-              <QuestionAnswerIcon sx={{ fontSize: 24, color: '#2F3437', mt: 0.2 }} />
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#2F3437', fontSize: '1.1rem', lineHeight: 1.7 }}>
+              <QuestionAnswerIcon sx={{ fontSize: 24, color: '#0A1F2E', mt: 0.2 }} />
+              <Typography variant="body2" sx={{ fontWeight: 600, color: '#0A1F2E', fontSize: '1.1rem', lineHeight: 1.7 }}>
                 {q}
               </Typography>
             </Stack>
@@ -339,7 +339,7 @@ function PracticeSection({ lines }: { lines: string[] }) {
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '6px',
                   fontSize: '0.9rem',
-                  backgroundColor: '#FAFAF9',
+                  backgroundColor: '#F8F6F2',
                 },
               }}
             />
@@ -353,10 +353,10 @@ function PracticeSection({ lines }: { lines: string[] }) {
                   borderRadius: '6px',
                   textTransform: 'none',
                   fontSize: '0.9rem',
-                  borderColor: '#DDDDDD',
-                  color: '#787774',
+                  borderColor: '#D1D5DB',
+                  color: '#6B7280',
                   fontWeight: 600,
-                  '&:hover': { borderColor: '#2F3437', color: '#2F3437' },
+                  '&:hover': { borderColor: '#0A1F2E', color: '#0A1F2E' },
                 }}
               >
                 {revealed[idx] ? 'Ẩn gợi ý' : 'Xem gợi ý'}
@@ -432,8 +432,8 @@ function DefaultSection({ lines }: { lines: string[] }) {
         if (line.startsWith('- ')) {
           return (
             <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
-              <Box sx={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: '#BBBBBB', mt: 0.6, flexShrink: 0 }} />
-              <Typography variant="body2" sx={{ color: '#2F3437', fontSize: '1.05rem', lineHeight: 1.7 }}>
+              <Box sx={{ width: 5, height: 5, borderRadius: '50%', backgroundColor: '#9CA3AF', mt: 0.6, flexShrink: 0 }} />
+              <Typography variant="body2" sx={{ color: '#0A1F2E', fontSize: '1.05rem', lineHeight: 1.7 }}>
                 {parseInline(line.replace(/^- /, ''))}
               </Typography>
             </Box>
@@ -441,13 +441,13 @@ function DefaultSection({ lines }: { lines: string[] }) {
         }
         if (line.startsWith('*') && line.endsWith('*')) {
           return (
-            <Typography key={i} variant="body2" sx={{ color: '#787774', fontSize: '1rem', fontStyle: 'italic', lineHeight: 1.7 }}>
+            <Typography key={i} variant="body2" sx={{ color: '#6B7280', fontSize: '1rem', fontStyle: 'italic', lineHeight: 1.7 }}>
               {parseInline(line.slice(1, -1))}
             </Typography>
           );
         }
         return (
-          <Typography key={i} variant="body2" sx={{ color: '#2F3437', fontSize: '1.05rem', lineHeight: 1.7 }}>
+          <Typography key={i} variant="body2" sx={{ color: '#0A1F2E', fontSize: '1.05rem', lineHeight: 1.7 }}>
             {parseInline(line)}
           </Typography>
         );
@@ -487,7 +487,7 @@ export default function LessonRenderer({ content }: LessonRendererProps) {
 
   if (sections.length === 0) {
     return (
-      <Typography variant="body2" sx={{ color: '#787774' }}>
+      <Typography variant="body2" sx={{ color: '#6B7280' }}>
         {content}
       </Typography>
     );
@@ -510,7 +510,7 @@ export default function LessonRenderer({ content }: LessonRendererProps) {
             key={si}
             sx={{
               borderRadius: '8px',
-              border: '1px solid #EAEAEA',
+              border: '1px solid #E8E5DF',
               boxShadow: 'none',
               backgroundColor: '#FFFFFF',
               overflow: 'hidden',
@@ -521,20 +521,20 @@ export default function LessonRenderer({ content }: LessonRendererProps) {
               sx={{
                 px: 3,
                 py: 2.5,
-                borderBottom: '1px solid #F0F0F0',
+                borderBottom: '1px solid #EDE9E3',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1.5,
               }}
             >
-              <Box sx={{ color: '#2F3437', display: 'flex' }}>{icon}</Box>
+              <Box sx={{ color: '#0A1F2E', display: 'flex' }}>{icon}</Box>
               <Typography
                 variant="subtitle1"
                 sx={{
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 600,
                   fontSize: '1.35rem',
-                  color: '#2F3437',
+                  color: '#0A1F2E',
                   letterSpacing: '-0.01em',
                 }}
               >
