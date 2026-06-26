@@ -28,6 +28,17 @@ const TutorCoursesPage = React.lazy(() => import('./pages/tutor/TutorCoursesPage
 const TutorStudentsPage = React.lazy(() => import('./pages/tutor/TutorStudentsPage'));
 const TutorEarningsPage = React.lazy(() => import('./pages/tutor/TutorEarningsPage'));
 const AdminDashboardPage = React.lazy(() => import('./pages/admin/AdminDashboardPage'));
+const AdminUsersPage = React.lazy(() => import('./pages/admin/AdminUsersPage'));
+const AdminMaterialsPage = React.lazy(() => import('./pages/admin/AdminMaterialsPage'));
+const AdminTestsPage = React.lazy(() => import('./pages/admin/AdminTestsPage'));
+const AdminPlacementTestsPage = React.lazy(() => import('./pages/admin/AdminPlacementTestsPage'));
+const AdminTutorsPage = React.lazy(() => import('./pages/admin/AdminTutorsPage'));
+const AdminContentPage = React.lazy(() => import('./pages/admin/AdminContentPage'));
+const AdminActivityPage = React.lazy(() => import('./pages/admin/AdminActivityPage'));
+const TutorAvailabilityPage = React.lazy(() => import('./pages/tutor/TutorAvailabilityPage'));
+const TutorBookingsPage = React.lazy(() => import('./pages/tutor/TutorBookingsPage'));
+const TutorProfilePage = React.lazy(() => import('./pages/tutor/TutorProfilePage'));
+const TutorApplyPage = React.lazy(() => import('./pages/tutor/TutorApplyPage'));
 const NotFoundPage = React.lazy(() => import('./pages/shared/NotFoundPage'));
 
 function LoadingFallback() {
@@ -38,14 +49,17 @@ function LoadingFallback() {
   );
 }
 
-function ProtectedRoute({ children, requiredRole }: { children: React.ReactNode; requiredRole?: string }) {
+function ProtectedRoute({ children, requiredRole }: { children: React.ReactNode; requiredRole?: string | string[] }) {
   const { isAuth, authLoading, currentUser } = useSelector((s: RootState) => s.user);
 
   if (authLoading) return <LoadingFallback />;
   if (!isAuth) return <Navigate to="/login" replace />;
-  if (requiredRole && currentUser?.role !== requiredRole) {
-    const fallback = currentUser?.role === 'admin' ? '/admin' : currentUser?.role === 'tutor' ? '/tutor' : '/dashboard';
-    return <Navigate to={fallback} replace />;
+  if (requiredRole) {
+    const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!currentUser || !roles.includes(currentUser.role)) {
+      const fallback = currentUser?.role === 'admin' ? '/admin' : currentUser?.role === 'tutor' ? '/tutor' : '/dashboard';
+      return <Navigate to={fallback} replace />;
+    }
   }
   return <>{children}</>;
 }
@@ -116,14 +130,16 @@ function AppRoutes() {
           <Route path="/" element={<RootRedirect />} />
 
           {/* Student */}
-          <Route path="/dashboard" element={<ProtectedRoute><PageTransition title="Dashboard"><DashboardPage /></PageTransition></ProtectedRoute>} />
-          <Route path="/tutors" element={<ProtectedRoute><PageTransition title="Tìm gia sư"><TutorBrowsePage /></PageTransition></ProtectedRoute>} />
-          <Route path="/tutors/:id" element={<ProtectedRoute><PageTransition title="Chi tiết gia sư"><TutorDetailPage /></PageTransition></ProtectedRoute>} />
-          <Route path="/courses" element={<ProtectedRoute><PageTransition title="Khóa học"><CourseBrowsePage /></PageTransition></ProtectedRoute>} />
-          <Route path="/courses/:id" element={<ProtectedRoute><PageTransition title="Chi tiết khóa học"><CourseDetailPage /></PageTransition></ProtectedRoute>} />
-          <Route path="/sessions" element={<ProtectedRoute><PageTransition title="Lịch học"><SessionsPage /></PageTransition></ProtectedRoute>} />
-          <Route path="/messages" element={<ProtectedRoute><PageTransition title="Tin nhắn"><MessagesPage /></PageTransition></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><PageTransition title="Hồ sơ"><ProfilePage /></PageTransition></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute requiredRole="student"><PageTransition title="Dashboard"><DashboardPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutors" element={<ProtectedRoute requiredRole="student"><PageTransition title="Tìm gia sư"><TutorBrowsePage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutors/:id" element={<ProtectedRoute requiredRole="student"><PageTransition title="Chi tiết gia sư"><TutorDetailPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/courses" element={<ProtectedRoute requiredRole="student"><PageTransition title="Khóa học"><CourseBrowsePage /></PageTransition></ProtectedRoute>} />
+          <Route path="/courses/:id" element={<ProtectedRoute requiredRole="student"><PageTransition title="Chi tiết khóa học"><CourseDetailPage /></PageTransition></ProtectedRoute>} />
+
+          {/* Shared: Student + Tutor */}
+          <Route path="/sessions" element={<ProtectedRoute requiredRole={['student', 'tutor']}><PageTransition title="Lịch học"><SessionsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/messages" element={<ProtectedRoute requiredRole={['student', 'tutor']}><PageTransition title="Tin nhắn"><MessagesPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute requiredRole={['student', 'tutor', 'admin']}><PageTransition title="Hồ sơ"><ProfilePage /></PageTransition></ProtectedRoute>} />
 
           {/* Tutor */}
           <Route path="/tutor" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Bảng điều khiển"><TutorDashboardPage /></PageTransition></ProtectedRoute>} />
@@ -133,6 +149,19 @@ function AppRoutes() {
 
           {/* Admin */}
           <Route path="/admin" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Quản trị"><AdminDashboardPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Quản lý người dùng"><AdminUsersPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/materials" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Bài học"><AdminMaterialsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/tests" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Bài kiểm tra"><AdminTestsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/placement-tests" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Kiểm tra đầu vào"><AdminPlacementTestsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/tutors" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Quản lý gia sư"><AdminTutorsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/content" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Nội dung"><AdminContentPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/admin/activity" element={<ProtectedRoute requiredRole="admin"><PageTransition title="Lịch sử hoạt động"><AdminActivityPage /></PageTransition></ProtectedRoute>} />
+
+          {/* Tutor */}
+          <Route path="/tutor/availability" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Lịch rảnh"><TutorAvailabilityPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutor/bookings" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Lịch đặt"><TutorBookingsPage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutor/profile" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Hồ sơ gia sư"><TutorProfilePage /></PageTransition></ProtectedRoute>} />
+          <Route path="/tutor/apply" element={<ProtectedRoute requiredRole="tutor"><PageTransition title="Đăng ký gia sư"><TutorApplyPage /></PageTransition></ProtectedRoute>} />
 
           {/* 404 */}
           <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />

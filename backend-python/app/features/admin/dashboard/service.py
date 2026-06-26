@@ -17,7 +17,7 @@ async def get_stats() -> Dict[str, Any]:
 
     # Count by role
     admin_count = 0
-    learner_count = 0
+    student_count = 0
     premium_count = 0
     banned_count = 0
 
@@ -27,7 +27,7 @@ async def get_stats() -> Dict[str, Any]:
         if role == "admin":
             admin_count += 1
         else:
-            learner_count += 1
+            student_count += 1
         if data.get("membership") == "premium":
             premium_count += 1
         if data.get("status") == "banned":
@@ -57,7 +57,7 @@ async def get_stats() -> Dict[str, Any]:
     return {
         "totalUsers": total_users,
         "adminCount": admin_count,
-        "learnerCount": learner_count,
+        "studentCount": student_count,
         "premiumCount": premium_count,
         "bannedCount": banned_count,
         "totalMaterials": total_materials,

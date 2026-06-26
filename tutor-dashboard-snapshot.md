@@ -1,0 +1,38 @@
+- generic [ref=e10]:
+  - generic [ref=e11]:
+    - heading "DynoLMS" [level=5] [ref=e12]
+    - heading "Đăng nhập" [level=6] [ref=e13]
+    - paragraph [ref=e14]: Chào mừng bạn đến với DynoLMS
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]: Email
+      - generic [ref=e18]:
+        - img [ref=e20]
+        - textbox "Email" [ref=e22]
+        - group:
+          - generic: Email
+    - generic [ref=e23]:
+      - generic [ref=e24]: Mật khẩu
+      - generic [ref=e25]:
+        - img [ref=e27]
+        - textbox "Mật khẩu" [ref=e29]
+        - button "Hiện mật khẩu" [ref=e31] [cursor=pointer]:
+          - img [ref=e32]
+        - group:
+          - generic: Mật khẩu
+    - link "Quên mật khẩu?" [ref=e35] [cursor=pointer]:
+      - /url: /forgot-password
+    - button "Đăng nhập" [ref=e36] [cursor=pointer]: Đăng nhập
+    - separator [ref=e37]:
+      - generic [ref=e38]: hoặc
+    - generic [ref=e39]:
+      - button "Google" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - text: Google
+      - button "Facebook" [ref=e44] [cursor=pointer]:
+        - img [ref=e46]
+        - text: Facebook
+    - paragraph [ref=e48]:
+      - text: Chưa có tài khoản?
+      - link "Đăng ký" [ref=e49] [cursor=pointer]:
+        - /url: /register

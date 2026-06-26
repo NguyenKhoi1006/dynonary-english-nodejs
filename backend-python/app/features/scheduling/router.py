@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
 
-from app.dependencies import verify_firebase_token
+from app.dependencies import verify_firebase_token, verify_role
 from app.features.scheduling.schema import (
     SetAvailabilityRequest,
     AvailabilityResponse,
@@ -56,7 +56,7 @@ async def _get_user_info(user_id: str):
 @router.post("/book")
 async def create_booking(
     body: BookingCreate,
-    user: dict = Depends(verify_firebase_token),
+    user: dict = Depends(verify_role({"student"})),
 ):
     uid = user.get("uid", "")
     profile = await _get_user_info(uid)
@@ -87,7 +87,7 @@ async def get_tutor_bookings(user: dict = Depends(verify_firebase_token)):
     uid = user.get("uid", "")
     tutor = await tutor_service.get_tutor_by_user_id(uid)
     if not tutor:
-        raise HTTPException(status_code=403, detail="Chỉ gia sư mới xem được")
+        return BookingListResponse(bookings=[], total=0)
 
     bookings = await scheduling_service.get_bookings_for_tutor(tutor["uid"])
     return BookingListResponse(
@@ -133,7 +133,7 @@ async def get_my_sessions(
     if role == "tutor":
         tutor = await tutor_service.get_tutor_by_user_id(uid)
         if not tutor:
-            raise HTTPException(status_code=403, detail="Không tìm thấy gia sư")
+            return SessionListResponse(sessions=[], total=0)
         user_id = tutor["uid"]
     else:
         user_id = uid

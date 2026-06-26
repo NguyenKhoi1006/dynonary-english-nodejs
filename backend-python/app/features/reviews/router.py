@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 
-from app.dependencies import verify_firebase_token
+from app.dependencies import verify_firebase_token, verify_role
 from app.features.reviews.schema import (
     ReviewCreate,
     ReviewResponse,
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/reviews", tags=["Reviews"])
 @router.post("/create")
 async def create_review(
     body: ReviewCreate,
-    user: dict = Depends(verify_firebase_token),
+    user: dict = Depends(verify_role({"student"})),
 ):
     uid = user.get("uid", "")
     profile = await _get_student_info(uid)

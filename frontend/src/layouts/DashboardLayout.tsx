@@ -11,6 +11,10 @@ import {
   DarkMode as DarkModeIcon, LightMode as LightModeIcon,
   VideoLibrary as VideoLibraryIcon, MonetizationOn as MonetizationOnIcon,
   AdminPanelSettings as AdminIcon, Person as PersonIcon,
+  Book as BookIcon, Quiz as QuizIcon, Assignment as AssignmentIcon,
+  RecordVoiceOver as RecordVoiceOverIcon, Article as ArticleIcon,
+  History as HistoryIcon, Schedule as ScheduleIcon, EventNote as EventNoteIcon,
+  AppRegistration as AppRegistrationIcon,
 } from '@mui/icons-material';
 import { useAppDispatch, useAppSelector } from '../hooks/useAppDispatch';
 import { toggleTheme } from '../store/slices/uiSlice';
@@ -43,16 +47,31 @@ export default function DashboardLayout({ children, role }: DashboardLayoutProps
   const { themeMode } = useAppSelector(s => s.ui);
 
   const navItems: NavItem[] = [
-    { label: 'Dashboard', path: '/dashboard', icon: <DashboardIcon />, roles: ['student', 'tutor'] },
+    // Admin
     { label: 'Dashboard', path: '/admin', icon: <AdminIcon />, roles: ['admin'] },
+    { label: 'Người dùng', path: '/admin/users', icon: <PeopleIcon />, roles: ['admin'] },
+    { label: 'Bài học', path: '/admin/materials', icon: <BookIcon />, roles: ['admin'] },
+    { label: 'Bài kiểm tra', path: '/admin/tests', icon: <QuizIcon />, roles: ['admin'] },
+    { label: 'Kiểm tra đầu vào', path: '/admin/placement-tests', icon: <AssignmentIcon />, roles: ['admin'] },
+    { label: 'Gia sư', path: '/admin/tutors', icon: <RecordVoiceOverIcon />, roles: ['admin'] },
+    { label: 'Nội dung', path: '/admin/content', icon: <ArticleIcon />, roles: ['admin'] },
+    { label: 'Lịch sử', path: '/admin/activity', icon: <HistoryIcon />, roles: ['admin'] },
+    // Student
     { label: 'Tìm gia sư', path: '/tutors', icon: <PeopleIcon />, roles: ['student'] },
-    { label: 'Khóa học', path: '/courses', icon: <SchoolIcon />, roles: ['student', 'tutor'] },
-    { label: 'Lịch học', path: '/sessions', icon: <CalendarIcon />, roles: ['student', 'tutor'] },
+    { label: 'Khóa học', path: '/courses', icon: <SchoolIcon />, roles: ['student'] },
+    { label: 'Lịch học', path: '/sessions', icon: <CalendarIcon />, roles: ['student'] },
     { label: 'Tin nhắn', path: '/messages', icon: <MessageIcon />, roles: ['student', 'tutor'] },
     { label: 'Đánh giá', path: '/reviews', icon: <StarIcon />, roles: ['student', 'tutor'] },
+    // Tutor
+    { label: 'Dashboard', path: '/tutor', icon: <DashboardIcon />, roles: ['tutor'] },
+    { label: 'Lịch rảnh', path: '/tutor/availability', icon: <ScheduleIcon />, roles: ['tutor'] },
+    { label: 'Lịch đặt', path: '/tutor/bookings', icon: <EventNoteIcon />, roles: ['tutor'] },
     { label: 'Học viên', path: '/students', icon: <PeopleIcon />, roles: ['tutor'] },
     { label: 'Doanh thu', path: '/earnings', icon: <MonetizationOnIcon />, roles: ['tutor'] },
     { label: 'Bài giảng', path: '/my-courses', icon: <VideoLibraryIcon />, roles: ['tutor'] },
+    { label: 'Hồ sơ gia sư', path: '/tutor/profile', icon: <PersonIcon />, roles: ['tutor'] },
+    { label: 'Đăng ký gia sư', path: '/tutor/apply', icon: <AppRegistrationIcon />, roles: ['tutor'] },
+    // Shared
     { label: 'Hồ sơ', path: '/profile', icon: <PersonIcon />, roles: ['student', 'tutor', 'admin'] },
     { label: 'Cài đặt', path: '/settings', icon: <SettingsIcon />, roles: ['student', 'tutor', 'admin'] },
   ];

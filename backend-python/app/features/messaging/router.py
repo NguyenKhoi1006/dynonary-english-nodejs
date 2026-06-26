@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 
-from app.dependencies import verify_firebase_token
+from app.dependencies import verify_firebase_token, verify_role
+
+STUDENT_OR_TUTOR = Depends(verify_role({"student", "tutor"}))
 from app.features.messaging.schema import (
     MessageCreate,
     MessageResponse,
@@ -16,7 +18,7 @@ router = APIRouter(prefix="/messaging", tags=["Messaging"])
 @router.post("/send")
 async def send_message(
     body: MessageCreate,
-    user: dict = Depends(verify_firebase_token),
+    user: dict = STUDENT_OR_TUTOR,
 ):
     uid = user.get("uid", "")
     profile = await _get_user_info(uid)
@@ -35,7 +37,7 @@ async def send_message(
 
 
 @router.get("/conversations", response_model=ConversationListResponse)
-async def get_conversations(user: dict = Depends(verify_firebase_token)):
+async def get_conversations(user: dict = STUDENT_OR_TUTOR):
     uid = user.get("uid", "")
     conversations = await messaging_service.get_conversations(uid)
     return ConversationListResponse(
@@ -46,7 +48,7 @@ async def get_conversations(user: dict = Depends(verify_firebase_token)):
 @router.get("/messages/{otherId}", response_model=MessageListResponse)
 async def get_messages(
     otherId: str,
-    user: dict = Depends(verify_firebase_token),
+    user: dict = STUDENT_OR_TUTOR,
 ):
     uid = user.get("uid", "")
     messages = await messaging_service.get_messages(uid, otherId)
@@ -59,7 +61,7 @@ async def get_messages(
 @router.put("/read/{otherId}")
 async def mark_as_read(
     otherId: str,
-    user: dict = Depends(verify_firebase_token),
+    user: dict = STUDENT_OR_TUTOR,
 ):
     uid = user.get("uid", "")
     await messaging_service.mark_as_read(uid, otherId)

@@ -1,53 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Box, Card, CardContent, Typography, Grid,
+  Box, Card, CardContent, Typography, Grid, Button,
 } from '@mui/material';
-import {
-  People as PeopleIcon, School as SchoolIcon, MenuBook as BookIcon,
-  CalendarMonth as CalendarIcon,
-} from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../layouts/DashboardLayout';
+import { adminApi, type AdminStats } from '../../services/lmsApi';
 import LoadingSkeleton from '../../components/LoadingSkeleton';
-
-const statCards = [
-  { label: 'Tổng người dùng', value: '1,247' },
-  { label: 'Tổng gia sư', value: '86' },
-  { label: 'Tổng khóa học', value: '234' },
-  { label: 'Tổng buổi học', value: '3,892' },
-];
-
-const roleColors: Record<string, 'primary' | 'secondary' | 'error' | 'default'> = {
-  tutor: 'secondary', student: 'primary', admin: 'error',
-};
-const roleLabels: Record<string, string> = { tutor: 'Gia sư', student: 'Học viên', admin: 'Admin' };
-const statusColors: Record<string, 'success' | 'warning' | 'error'> = {
-  active: 'success', pending: 'warning', banned: 'error',
-};
-const statusLabels: Record<string, string> = { active: 'Hoạt động', pending: 'Chờ duyệt', banned: 'Bị cấm' };
+import ErrorState from '../../components/ErrorState';
 
 export default function AdminDashboardPage() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<AdminStats | null>(null);
 
-  // Simulate API load — admin endpoints not yet implemented
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 400);
-    return () => clearTimeout(t);
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+    adminApi.getDashboardStats()
+      .then(data => { if (!cancelled) setStats(data); })
+      .catch(err => { if (!cancelled) setError(err.message || 'Không thể tải dữ liệu'); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, []);
+
+  const statCards = stats
+    ? [
+        { label: 'Người dùng', value: stats.totalUsers.toLocaleString() },
+        { label: 'Học viên', value: stats.studentCount.toLocaleString() },
+        { label: 'Gia sư', value: (stats.totalUsers - stats.adminCount - stats.studentCount).toLocaleString() },
+        { label: 'Premium', value: stats.premiumCount.toLocaleString() },
+        { label: 'Bị cấm', value: stats.bannedCount.toLocaleString() },
+        { label: 'Bài học', value: stats.totalMaterials.toLocaleString() },
+        { label: 'Bài kiểm tra', value: stats.totalTests.toLocaleString() },
+      ]
+    : [];
+
+  if (error) {
+    return (
+      <DashboardLayout role="admin">
+        <Box sx={{ p: { xs: 2, md: 0 } }}>
+          <ErrorState title="Lỗi tải dữ liệu" message={error} onRetry={() => window.location.reload()} />
+        </Box>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout role="admin">
       <Box>
-        <Typography variant="h4" sx={{ mb: 0.5 }}>Quản trị hệ thống</Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5 }}>
-          Tổng quan hoạt động của nền tảng DynoLMS
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap', gap: 1 }}>
+          <Box>
+            <Typography variant="h4" sx={{ mb: 0.25 }}>Quản trị hệ thống</Typography>
+            <Typography variant="body2" color="text.secondary">Tổng quan hoạt động của nền tảng</Typography>
+          </Box>
+          <Button variant="contained" size="small" onClick={() => navigate('/admin/users')}>
+            Quản lý người dùng
+          </Button>
+        </Box>
 
         {loading ? (
-          <LoadingSkeleton type="stats" count={4} />
+          <LoadingSkeleton type="stats" count={7} />
         ) : (
-          <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid container spacing={2}>
             {statCards.map((stat, i) => (
-              <Grid item xs={6} lg={3} key={i}>
+              <Grid item xs={6} sm={4} lg={3} key={i}>
                 <Card>
                   <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
                     <Typography variant="h5">{stat.value}</Typography>

@@ -12,6 +12,7 @@ from app.features.admin.words.router import router as admin_words_router
 from app.features.admin.sentences.router import router as admin_sentences_router
 from app.features.admin.blog.router import router as admin_blog_router
 from app.features.admin.placement_tests.router import router as admin_placement_tests_router
+from app.features.admin.tutors.router import router as admin_tutors_router
 
 admin_router = APIRouter()
 
@@ -34,3 +35,4 @@ admin_router.include_router(admin_words_router)
 admin_router.include_router(admin_sentences_router)
 admin_router.include_router(admin_blog_router)
 admin_router.include_router(admin_placement_tests_router)
+admin_router.include_router(admin_tutors_router)
